@@ -9,21 +9,21 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ## Public APIs / Interfaces / Types (Planned)
 
 - Web routes:
-  - `GET /` (published catalog)
-  - `GET /courses/{course:slug}` (course entry page)
-  - `POST /courses/{course:slug}/enroll` (auth-required enrollment)
-  - `GET /courses/{course:slug}/lessons/{lesson}` (lesson page, access-checked)
-  - `POST /courses/{course:slug}/lessons/{lesson}/complete` (auth-required completion)
+    - `GET /` (published catalog)
+    - `GET /courses/{course:slug}` (course entry page)
+    - `POST /courses/{course:slug}/enroll` (auth-required enrollment)
+    - `GET /courses/{course:slug}/lessons/{lesson}` (lesson page, access-checked)
+    - `POST /courses/{course:slug}/lessons/{lesson}/complete` (auth-required completion)
 - Action contracts (invokable classes):
-  - `EnrollInCourseAction(User $user, Course $course): Enrollment`
-  - `AuthorizeLessonAccessAction(?User $user, Course $course, Lesson $lesson): bool`
-  - `RecordLessonCompletionAction(User $user, Lesson $lesson): LessonProgress`
-  - `FinalizeCourseCompletionAction(User $user, Course $course): ?CourseCompletion`
-  - `SendWelcomeEmailAction(User $user): void`
+    - `EnrollInCourseAction(User $user, Course $course): Enrollment`
+    - `AuthorizeLessonAccessAction(?User $user, Course $course, Lesson $lesson): bool`
+    - `RecordLessonCompletionAction(User $user, Lesson $lesson): LessonProgress`
+    - `FinalizeCourseCompletionAction(User $user, Course $course): ?CourseCompletion`
+    - `SendWelcomeEmailAction(User $user): void`
 - Policies/interfaces:
-  - Enrollment ownership policy
-  - Lesson progress ownership policy
-  - Admin gate/policy for Filament access
+    - Enrollment ownership policy
+    - Lesson progress ownership policy
+    - Admin gate/policy for Filament access
 
 ## Phase 1: Foundation and Data Model
 
@@ -34,53 +34,53 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Create migrations (using artisan) for:
-   - `levels` table
-   - `courses` table
-     - `level_id`, `title`, `slug` (unique), `description`, `image_url` (nullable), `is_published` (bool), timestamps, soft deletes
-   - `lessons` table
-     - `course_id`, `title`, `order`, `video_url`, `duration_seconds` (nullable), `is_free_preview` (bool), timestamps
-     - unique index on `(course_id, order)`
-   - `enrollments` table
-     - `user_id`, `course_id`, timestamps
-     - unique index on `(user_id, course_id)`
-   - `lesson_progress` table
-     - `user_id`, `lesson_id`, `watch_seconds` default `0`, `started_at` nullable, `completed_at` nullable, timestamps
-     - unique index on `(user_id, lesson_id)`
-   - `course_completions` table
-     - `user_id`, `course_id`, `completed_at`, timestamps
-     - unique index on `(user_id, course_id)`
+    - `levels` table
+    - `courses` table
+        - `level_id`, `title`, `slug` (unique), `description`, `image_url` (nullable), `is_published` (bool), timestamps, soft deletes
+    - `lessons` table
+        - `course_id`, `title`, `order`, `video_url`, `duration_seconds` (nullable), `is_free_preview` (bool), timestamps
+        - unique index on `(course_id, order)`
+    - `enrollments` table
+        - `user_id`, `course_id`, timestamps
+        - unique index on `(user_id, course_id)`
+    - `lesson_progress` table
+        - `user_id`, `lesson_id`, `watch_seconds` default `0`, `started_at` nullable, `completed_at` nullable, timestamps
+        - unique index on `(user_id, lesson_id)`
+    - `course_completions` table
+        - `user_id`, `course_id`, `completed_at`, timestamps
+        - unique index on `(user_id, course_id)`
 2. Add/modify `users` table for admin capability:
-   - Add `is_admin` boolean default `false`.
+    - Add `is_admin` boolean default `false`.
 3. Create models and relationships:
-   - `app/Models/Level.php`
-   - `app/Models/Course.php`
-   - `app/Models/Lesson.php`
-   - `app/Models/Enrollment.php`
-   - `app/Models/LessonProgress.php`
-   - `app/Models/CourseCompletion.php`
-   - Update `app/Models/User.php` relationships to enrollments/progress/completions.
+    - `app/Models/Level.php`
+    - `app/Models/Course.php`
+    - `app/Models/Lesson.php`
+    - `app/Models/Enrollment.php`
+    - `app/Models/LessonProgress.php`
+    - `app/Models/CourseCompletion.php`
+    - Update `app/Models/User.php` relationships to enrollments/progress/completions.
 4. Add factories:
-   - `database/factories/LevelFactory.php`
-   - `database/factories/CourseFactory.php`
-   - `database/factories/LessonFactory.php`
-   - `database/factories/EnrollmentFactory.php`
-   - `database/factories/LessonProgressFactory.php`
-   - `database/factories/CourseCompletionFactory.php`
-   - Update `UserFactory` with `admin()` state.
+    - `database/factories/LevelFactory.php`
+    - `database/factories/CourseFactory.php`
+    - `database/factories/LessonFactory.php`
+    - `database/factories/EnrollmentFactory.php`
+    - `database/factories/LessonProgressFactory.php`
+    - `database/factories/CourseCompletionFactory.php`
+    - Update `UserFactory` with `admin()` state.
 5. Seed baseline dataset:
-   - Update `database/seeders/DatabaseSeeder.php` to create:
-     - 1 admin, 1 learner
-     - 3 levels
-     - 2 to 3 courses (mix published/draft)
-     - lessons with preview/non-preview flags.
+    - Update `database/seeders/DatabaseSeeder.php` to create:
+        - 1 admin, 1 learner
+        - 3 levels
+        - 2 to 3 courses (mix published/draft)
+        - lessons with preview/non-preview flags.
 
 ### Tests
 
 - New file `tests/Feature/Lms/SchemaConstraintsTest.php`:
-  - unique slug enforced
-  - unique enrollment enforced
-  - unique completion enforced
-  - unique progress row enforced
+    - unique slug enforced
+    - unique enrollment enforced
+    - unique completion enforced
+    - unique progress row enforced
 - Run targeted tests only for this phase.
 
 ### Exit Criteria
@@ -98,39 +98,39 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Routes:
-   - Update `routes/web.php` with:
-     - `GET /` catalog action/controller
-     - `GET /courses/{course:slug}`
-     - `POST /courses/{course:slug}/enroll` with `auth` middleware
+    - Update `routes/web.php` with:
+        - `GET /` catalog action/controller
+        - `GET /courses/{course:slug}`
+        - `POST /courses/{course:slug}/enroll` with `auth` middleware
 2. Controllers / Livewire entrypoints:
-   - Add lightweight HTTP layer:
-     - `app/Http/Controllers/CourseCatalogController.php`
-     - `app/Http/Controllers/CourseShowController.php`
-     - `app/Http/Controllers/EnrollmentController.php`
+    - Add lightweight HTTP layer:
+        - `app/Http/Controllers/CourseCatalogController.php`
+        - `app/Http/Controllers/CourseShowController.php`
+        - `app/Http/Controllers/EnrollmentController.php`
 3. Actions:
-   - `app/Actions/LMS/EnrollInCourseAction.php`
-     - Transactional
-     - Reject unpublished course
-     - `firstOrCreate` + unique index fallback handling for race safety
+    - `app/Actions/LMS/EnrollInCourseAction.php`
+        - Transactional
+        - Reject unpublished course
+        - `firstOrCreate` + unique index fallback handling for race safety
 4. Views:
-   - Replace hardcoded home course list in `resources/views/home/design12.blade.php` with published DB-driven rendering.
-   - Add `resources/views/courses/show.blade.php`:
-     - image/title/level/description
-     - enroll or continue CTA
-     - ordered lesson list
-     - guest sees only preview lessons
+    - Replace hardcoded home course list in `resources/views/home/design12.blade.php` with published DB-driven rendering.
+    - Add `resources/views/courses/show.blade.php`:
+        - image/title/level/description
+        - enroll or continue CTA
+        - ordered lesson list
+        - guest sees only preview lessons
 5. Policies:
-   - `app/Policies/CoursePolicy.php` for enrollability visibility rules if needed.
-   - Register policies in `app/Providers/AppServiceProvider.php` (or existing Laravel 12 policy registration pattern).
+    - `app/Policies/CoursePolicy.php` for enrollability visibility rules if needed.
+    - Register policies in `app/Providers/AppServiceProvider.php` (or existing Laravel 12 policy registration pattern).
 
 ### Tests
 
 - `tests/Feature/Lms/CatalogAndEnrollmentTest.php`:
-  - home lists published only
-  - guest cannot enroll
-  - auth user can enroll published
-  - draft/unpublished enrollment blocked
-  - repeated enrollment request remains one row (idempotent)
+    - home lists published only
+    - guest cannot enroll
+    - auth user can enroll published
+    - draft/unpublished enrollment blocked
+    - repeated enrollment request remains one row (idempotent)
 
 ### Exit Criteria
 
@@ -147,36 +147,36 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Routes:
-   - `GET /courses/{course:slug}/lessons/{lesson}`
-   - `POST /courses/{course:slug}/lessons/{lesson}/complete` (auth)
+    - `GET /courses/{course:slug}/lessons/{lesson}`
+    - `POST /courses/{course:slug}/lessons/{lesson}/complete` (auth)
 2. Access action:
-   - `app/Actions/LMS/AuthorizeLessonAccessAction.php`
-     - Preview lessons allowed for guests
-     - Non-preview requires valid enrollment
+    - `app/Actions/LMS/AuthorizeLessonAccessAction.php`
+        - Preview lessons allowed for guests
+        - Non-preview requires valid enrollment
 3. Controller:
-   - `app/Http/Controllers/LessonShowController.php`
-   - `app/Http/Controllers/LessonCompletionController.php`
+    - `app/Http/Controllers/LessonShowController.php`
+    - `app/Http/Controllers/LessonCompletionController.php`
 4. Lesson UI:
-   - `resources/views/lessons/show.blade.php`:
-     - Plyr player integration
-     - prev/next lesson navigation
-     - completion action button
+    - `resources/views/lessons/show.blade.php`:
+        - Plyr player integration
+        - prev/next lesson navigation
+        - completion action button
 5. Alpine features (3):
-   - Collapsible lesson list accordion.
-   - Confirmation modal before completion submit.
-   - Plyr lifecycle integration via `x-data`, `x-init`, `x-ref`.
-   - Optional fourth: animated progress bar state update.
+    - Collapsible lesson list accordion.
+    - Confirmation modal before completion submit.
+    - Plyr lifecycle integration via `x-data`, `x-init`, `x-ref`.
+    - Optional fourth: animated progress bar state update.
 6. Frontend assets:
-   - Update `resources/js/app.js` for Plyr init helpers if needed.
-   - Keep styling in existing Tailwind conventions.
+    - Update `resources/js/app.js` for Plyr init helpers if needed.
+    - Keep styling in existing Tailwind conventions.
 
 ### Tests
 
 - `tests/Feature/Lms/LessonAccessTest.php`:
-  - preview accessible to guest
-  - non-preview blocked for guest
-  - non-preview allowed for enrolled user
-  - lesson-course mismatch rejected (404/403 based on chosen enforcement)
+    - preview accessible to guest
+    - non-preview blocked for guest
+    - non-preview allowed for enrolled user
+    - lesson-course mismatch rejected (404/403 based on chosen enforcement)
 
 ### Exit Criteria
 
@@ -193,35 +193,35 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Mailables:
-   - `app/Mail/WelcomeEmail.php`
-   - `app/Mail/CourseCompletionEmail.php`
-   - Both implement queueing pattern (`ShouldQueue` on job/mailable strategy chosen consistently).
+    - `app/Mail/WelcomeEmail.php`
+    - `app/Mail/CourseCompletionEmail.php`
+    - Both implement queueing pattern (`ShouldQueue` on job/mailable strategy chosen consistently).
 2. Actions:
-   - `app/Actions/LMS/SendWelcomeEmailAction.php`
-   - `app/Actions/LMS/RecordLessonCompletionAction.php`
-     - upsert lesson_progress row
-     - set `started_at` when first interacted
-     - set `completed_at` idempotently
-   - `app/Actions/LMS/FinalizeCourseCompletionAction.php`
-     - transactional check against current lesson set
-     - create `course_completions` once
-     - dispatch completion email once only
+    - `app/Actions/LMS/SendWelcomeEmailAction.php`
+    - `app/Actions/LMS/RecordLessonCompletionAction.php`
+        - upsert lesson_progress row
+        - set `started_at` when first interacted
+        - set `completed_at` idempotently
+    - `app/Actions/LMS/FinalizeCourseCompletionAction.php`
+        - transactional check against current lesson set
+        - create `course_completions` once
+        - dispatch completion email once only
 3. Fortify integration:
-   - Update `app/Actions/Fortify/CreateNewUser.php` to dispatch welcome email action after create.
-   - Ensure async dispatch, not sync mail send.
+    - Update `app/Actions/Fortify/CreateNewUser.php` to dispatch welcome email action after create.
+    - Ensure async dispatch, not sync mail send.
 4. Concurrency/consistency rules:
-   - Use transaction around progress+completion boundary.
-   - Handle duplicate-key exceptions as idempotent success where appropriate.
-   - Ensure completion recalculates against current lesson set (content changed scenario).
+    - Use transaction around progress+completion boundary.
+    - Handle duplicate-key exceptions as idempotent success where appropriate.
+    - Ensure completion recalculates against current lesson set (content changed scenario).
 
 ### Tests
 
 - `tests/Feature/Lms/ProgressAndCompletionTest.php`:
-  - registration queues welcome email
-  - completion writes lesson_progress
-  - completing all lessons creates one completion row
-  - completion email sent once only under repeated completion calls
-  - transactional consistency test between progress write and completion creation
+    - registration queues welcome email
+    - completion writes lesson_progress
+    - completing all lessons creates one completion row
+    - completion email sent once only under repeated completion calls
+    - transactional consistency test between progress write and completion creation
 
 ### Exit Criteria
 
@@ -237,35 +237,35 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Policies:
-   - `app/Policies/EnrollmentPolicy.php`
-   - `app/Policies/LessonProgressPolicy.php`
-   - `app/Policies/CourseCompletionPolicy.php`
-   - Ensure all learner mutations are owner-scoped.
+    - `app/Policies/EnrollmentPolicy.php`
+    - `app/Policies/LessonProgressPolicy.php`
+    - `app/Policies/CourseCompletionPolicy.php`
+    - Ensure all learner mutations are owner-scoped.
 2. Filament panel/access:
-   - Validate/adjust `app/Providers/Filament/AdminPanelProvider.php` for admin-only guard using `is_admin`.
+    - Validate/adjust `app/Providers/Filament/AdminPanelProvider.php` for admin-only guard using `is_admin`.
 3. Filament resources:
-   - `LevelResource` (CRUD)
-   - `CourseResource` + Lessons relation manager (sortable by `order`)
-   - `UserResource` (read/list focus)
-   - Enrollment/progress visibility:
-     - On Course view: enrolled users with `% complete`
-     - On User view: enrolled courses with `% complete`
+    - `LevelResource` (CRUD)
+    - `CourseResource` + Lessons relation manager (sortable by `order`)
+    - `UserResource` (read/list focus)
+    - Enrollment/progress visibility:
+        - On Course view: enrolled users with `% complete`
+        - On User view: enrolled courses with `% complete`
 4. Dashboard widget:
-   - Total courses
-   - Total enrollments
-   - Average completion %
+    - Total courses
+    - Total enrollments
+    - Average completion %
 5. Query performance in admin:
-   - centralize aggregates and eager loading in resource queries
-   - avoid per-row calculated N+1 queries.
+    - centralize aggregates and eager loading in resource queries
+    - avoid per-row calculated N+1 queries.
 
 ### Tests
 
 - `tests/Feature/Lms/AuthorizationIsolationTest.php`:
-  - user cannot modify/read another user progress/enrollment
+    - user cannot modify/read another user progress/enrollment
 - `tests/Feature/Admin/FilamentAccessTest.php`:
-  - admin allowed, non-admin denied
+    - admin allowed, non-admin denied
 - `tests/Feature/Admin/FilamentResourcesTest.php`:
-  - resource pages load and core relations display expected data
+    - resource pages load and core relations display expected data
 
 ### Exit Criteria
 
@@ -281,21 +281,21 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 ### Implementation
 
 1. Performance pass:
-   - Review key queries (catalog, course show, lesson show, admin metrics).
-   - Add missing indexes/scopes if tests or profiling indicate bottlenecks.
+    - Review key queries (catalog, course show, lesson show, admin metrics).
+    - Add missing indexes/scopes if tests or profiling indicate bottlenecks.
 2. Timezone and timestamp handling:
-   - Store in UTC (default Laravel behavior).
-   - Document display strategy for user timezone conversion.
+    - Store in UTC (default Laravel behavior).
+    - Document display strategy for user timezone conversion.
 3. README completion:
-   - setup instructions
-   - seed data description
-   - run tests instructions
-   - assumptions/limits
-   - `If I had more time...`
-   - ERD image/link placement notes
+    - setup instructions
+    - seed data description
+    - run tests instructions
+    - assumptions/limits
+    - `If I had more time...`
+    - ERD image/link placement notes
 4. Final quality commands:
-   - `vendor/bin/pint --dirty`
-   - Targeted tests per module, then full `php artisan test --compact`
+    - `vendor/bin/pint --dirty`
+    - Targeted tests per module, then full `php artisan test --compact`
 
 ### Tests / Acceptance Matrix
 
