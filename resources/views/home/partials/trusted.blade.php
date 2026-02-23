@@ -1,10 +1,15 @@
-<div class="border-y border-gray-200 bg-gray-50">
-    <div class="max-w-6xl mx-auto px-6 py-8">
-        <p class="text-center text-xs font-semibold text-gray-400 tracking-widest mb-6">TRUSTED BY DEVELOPERS AT</p>
-        <div class="logos-row">
-            @foreach (['Shopify', 'Tighten', 'LaravelNews', 'Nerd.io', 'DigitalOcean', 'Forge', 'Vapor'] as $logo)
-                <span class="logo-item">{{ $logo }}</span>
-            @endforeach
+<div class="trusted-section">
+    <div class="py-6">
+        <p class="text-center text-[0.65rem] font-bold text-slate-400 tracking-[0.15em] uppercase mb-5">Trusted by
+            developers at</p>
+        <div class="relative overflow-hidden">
+            <div class="logos-track">
+                @php $logos = ['Shopify', 'Tighten', 'LaravelNews', 'Nerd.io', 'DigitalOcean', 'Forge', 'Vapor']; @endphp
+                @foreach ([...$logos, ...$logos] as $logo)
+                    <span class="logo-item">{{ $logo }}</span>
+                    <span class="text-slate-200 select-none" aria-hidden="true">·</span>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>

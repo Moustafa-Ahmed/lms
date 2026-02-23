@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Career 180')</title>
+    <meta name="description" content="@yield('description', 'Career 180 — Sign in or create your free account to start learning today.')">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('styles')
 </head>
+
 <body class="font-sans bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <!-- Header -->
     <header class="bg-white border-b border-gray-200">
@@ -37,4 +40,5 @@
     @livewireScripts
     @stack('scripts')
 </body>
+
 </html>

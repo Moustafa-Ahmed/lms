@@ -1,23 +1,106 @@
-<section id="features" class="max-w-6xl mx-auto px-6 py-20">
-    <div class="text-center mb-14">
-        <p class="text-xs font-semibold tracking-widest text-indigo-500 mb-3">FEATURES</p>
-        <h2 class="text-4xl font-black">Everything you need to level up</h2>
-        <p class="text-gray-500 mt-3 max-w-lg mx-auto">Built from the ground up to make learning effective, enjoyable, and measurable.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        @foreach ([
-            ['🎬', 'HD Screencasts', 'Cinematic-quality code walkthroughs. See exactly how real developers think.'],
-            ['🗺️', 'Structured Paths', 'Curated learning sequences from beginner to advanced — no guessing what\'s next.'],
-            ['📈', 'Progress Tracking', 'Pick up exactly where you left off. Track lesson completions and course progress.'],
-            ['🏅', 'Certificates', 'Earn a verified certificate when you complete a course. Share it on LinkedIn.'],
-            ['🔓', 'Free Previews', 'Every course has free preview lessons. Try before you commit.'],
-            ['⚡', 'Fast & Focused', 'No padding, no filler. Every lesson has a purpose. Respect your time.']
-        ] as [$icon, $title, $desc])
-            <div class="feat-card">
-                <div class="feat-icon">{{ $icon }}</div>
-                <h3 class="font-bold text-base mb-2">{{ $title }}</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">{{ $desc }}</p>
+<section id="features" class="features-section py-24 lg:py-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <div class="section-tag justify-center">Features</div>
+            <h2 class="section-heading text-4xl lg:text-5xl">Everything you need to level up</h2>
+            <p class="text-slate-500 mt-4 max-w-lg mx-auto text-lg leading-relaxed">Built from the ground up to make
+                learning effective, enjoyable, and measurable.</p>
+        </div>
+        <div class="feat-cards-grid">
+            {{-- HD Screencasts --}}
+            <div class="feat-card-v2 fc--indigo">
+                <span class="feat-card-num">01</span>
+                <div class="feat-card-icon feat-card-icon--indigo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7" />
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">HD Screencasts</h3>
+                <p class="feat-card-desc">Cinematic-quality code walkthroughs. See exactly how real developers think and
+                    build.</p>
             </div>
-        @endforeach
+
+            {{-- Structured Paths --}}
+            <div class="feat-card-v2 fc--violet">
+                <span class="feat-card-num">02</span>
+                <div class="feat-card-icon feat-card-icon--violet">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">Structured Paths</h3>
+                <p class="feat-card-desc">Curated learning sequences from beginner to advanced — no guessing what's
+                    next.</p>
+            </div>
+
+            {{-- Progress Tracking --}}
+            <div class="feat-card-v2 fc--emerald">
+                <span class="feat-card-num">03</span>
+                <div class="feat-card-icon feat-card-icon--emerald">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">Progress Tracking</h3>
+                <p class="feat-card-desc">Pick up exactly where you left off. Track lesson completions and course
+                    progress.</p>
+            </div>
+
+            {{-- Certificates --}}
+            <div class="feat-card-v2 fc--amber">
+                <span class="feat-card-num">04</span>
+                <div class="feat-card-icon feat-card-icon--amber">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7" />
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">Certificates</h3>
+                <p class="feat-card-desc">Earn a verified certificate when you complete a course. Share it on LinkedIn.
+                </p>
+            </div>
+
+            {{-- Free Previews --}}
+            <div class="feat-card-v2 fc--rose">
+                <span class="feat-card-num">05</span>
+                <div class="feat-card-icon feat-card-icon--rose">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">Free Previews</h3>
+                <p class="feat-card-desc">Every course has free preview lessons. Try before you commit to enrolling.
+                </p>
+            </div>
+
+            {{-- Fast & Focused --}}
+            <div class="feat-card-v2 fc--sky">
+                <span class="feat-card-num">06</span>
+                <div class="feat-card-icon feat-card-icon--sky">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                </div>
+                <h3 class="feat-card-title">Fast & Focused</h3>
+                <p class="feat-card-desc">No padding, no filler. Every lesson has a purpose. Respect your time.</p>
+            </div>
+        </div>
     </div>
 </section>
