@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CourseController::class, 'index'])->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::redirect('/dashboard', '/')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

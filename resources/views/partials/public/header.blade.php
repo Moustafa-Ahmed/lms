@@ -13,7 +13,16 @@
         </div>
         <div class="flex items-center gap-3">
             @auth
-                <a href="{{ url('/dashboard') }}" class="btn-indigo px-5 py-2 text-sm">Dashboard →</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button 
+                        type="submit" 
+                        class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors px-3 py-2"
+                        onclick="this.disabled=true;this.form.submit();"
+                    >
+                        Log out
+                    </button>
+                </form>
             @else
                 <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors px-3 py-2">
                     Log in

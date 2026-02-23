@@ -1,31 +1,49 @@
-<x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
+@extends('layouts.auth')
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+@section('title', 'Forgot Password')
 
-        <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-6">
-            @csrf
+@section('content')
+<div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-black text-gray-900 mb-2">Forgot password?</h1>
+        <p class="text-gray-500">Enter your email to receive a reset link</p>
+    </div>
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email Address')"
+    @if (session('status'))
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm text-center">
+            {{ session('status') }}
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('password.email') }}" class="space-y-5">
+        @csrf
+
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email address</label>
+            <input
                 type="email"
+                name="email"
+                id="email"
                 required
                 autofocus
-                placeholder="email@example.com"
-            />
-
-            <flux:button variant="primary" type="submit" class="w-full" data-test="email-password-reset-link-button">
-                {{ __('Email password reset link') }}
-            </flux:button>
-        </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
-            <span>{{ __('Or, return to') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('log in') }}</flux:link>
+                placeholder="you@example.com"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none"
+            >
         </div>
+
+        <button
+            type="submit"
+            class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+            onclick="this.disabled=true;this.innerText='Sending...';this.form.submit();"
+        >
+            {{ __('Email password reset link') }}
+        </button>
+    </form>
+
+    <div class="mt-6 text-center">
+        <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+            {{ __('Or, return to log in') }}
+        </a>
     </div>
-</x-layouts::auth>
+</div>
+@endsection
