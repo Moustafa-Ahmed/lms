@@ -20,6 +20,8 @@ class Course extends Model
         'description',
         'image_url',
         'is_published',
+        'lessons_count',
+        'total_duration_seconds',
     ];
 
     /** @return array<string, string> */
@@ -27,6 +29,8 @@ class Course extends Model
     {
         return [
             'is_published' => 'boolean',
+            'lessons_count' => 'integer',
+            'total_duration_seconds' => 'integer',
         ];
     }
 
@@ -56,11 +60,28 @@ class Course extends Model
 
     public function totalDuration(): int
     {
-        return $this->lessons()->sum('duration_seconds');
+        return $this->total_duration_seconds;
     }
 
     public function lessonCount(): int
     {
-        return $this->lessons()->count();
+        return $this->lessons_count;
+    }
+
+    public function formattedDuration(): string
+    {
+        $seconds = $this->total_duration_seconds;
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+
+        return sprintf('%dh %02dm', $hours, $minutes);
+    }
+
+    public function recalculateStats(): void
+    {
+        $this->update([
+            'lessons_count' => $this->lessons()->count(),
+            'total_duration_seconds' => $this->lessons()->sum('duration_seconds'),
+        ]);
     }
 }

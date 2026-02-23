@@ -1,6 +1,13 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+/* Shared public page styles */
+@import './pages/shared.css';
+
+/* Page-specific styles */
+@import './pages/home.css';
+@import './pages/courses.css';
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';

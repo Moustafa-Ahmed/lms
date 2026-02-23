@@ -18,4 +18,14 @@ class Level extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function badgeClass(): string
+    {
+        return match ($this->name) {
+            'Beginner' => 'lb-beg',
+            'Intermediate' => 'lb-mid',
+            'Advanced' => 'lb-adv',
+            default => 'lb-beg',
+        };
+    }
 }

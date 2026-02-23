@@ -1,0 +1,58 @@
+/* Shared Public Page Styles */
+:root {
+    --indigo: #6366F1;
+    --indigo-dark: #4F46E5;
+    --surface: #F9FAFB;
+    --border: #E5E7EB;
+    --muted: #6B7280;
+}
+
+.nav-border {
+    border-bottom: 1px solid var(--border);
+}
+
+.btn-indigo {
+    background: var(--indigo);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-indigo:hover {
+    background: var(--indigo-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
+.btn-indigo:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.lbadge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.lb-beg {
+    background: #ECFDF5;
+    color: #059669;
+}
+
+.lb-mid {
+    background: #FFF7ED;
+    color: #EA580C;
+}
+
+.lb-adv {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+[x-cloak] {
+    display: none !important;
+}

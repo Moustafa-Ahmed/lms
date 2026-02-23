@@ -15,13 +15,17 @@ class CourseFactory extends Factory
     {
         $title = fake()->unique()->sentence(4);
 
+        $level = Level::inRandomOrder()->first() ?? Level::factory()->create();
+
         return [
-            'level_id' => Level::factory(),
+            'level_id' => $level->id,
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => fake()->paragraph(),
             'image_url' => null,
             'is_published' => false,
+            'lessons_count' => 0,
+            'total_duration_seconds' => 0,
         ];
     }
 
@@ -36,27 +40,6 @@ class CourseFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_published' => false,
-        ]);
-    }
-
-    public function beginner(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'level_id' => Level::factory()->beginner(),
-        ]);
-    }
-
-    public function intermediate(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'level_id' => Level::factory()->intermediate(),
-        ]);
-    }
-
-    public function advanced(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'level_id' => Level::factory()->advanced(),
         ]);
     }
 

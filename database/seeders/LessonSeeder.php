@@ -32,6 +32,8 @@ class LessonSeeder extends Seeder
                     $data
                 );
             }
+
+            $course->recalculateStats();
         }
 
         $this->command->info('Created lessons for '.$courses->count().' courses.');

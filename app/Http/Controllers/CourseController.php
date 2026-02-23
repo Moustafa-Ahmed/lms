@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Actions\Course\EnrollInCourseAction;
+use App\Actions\Course\GetCourseAction;
+use App\Models\Course;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class CourseController extends Controller
+{
+    public function index(): View
+    {
+        $totalCourses = Course::query()
+            ->where('is_published', true)
+            ->count();
+
+        return view('home.index', compact('totalCourses'));
+    }
+
+    public function show(string $slug, GetCourseAction $action): View
+    {
+        $course = $action($slug);
+
+        return view('courses.show', compact('course'));
+    }
+
+    public function enroll(Request $request, string $slug, EnrollInCourseAction $action, GetCourseAction $getCourse): RedirectResponse
+    {
+        $course = $getCourse($slug);
+
+        $this->authorize('enroll', $course);
+
+        $action($request->user(), $course);
+
+        return redirect()->route('courses.show', $course->slug)
+            ->with('status', 'Successfully enrolled in the course!');
+    }
+}

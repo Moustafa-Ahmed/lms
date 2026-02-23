@@ -22,6 +22,13 @@ class LessonFactory extends Factory
         ];
     }
 
+    public function configure(): static
+    {
+        return $this->afterCreating(function ($lesson) {
+            $lesson->course->recalculateStats();
+        });
+    }
+
     public function freePreview(): static
     {
         return $this->state(fn (array $attributes) => [

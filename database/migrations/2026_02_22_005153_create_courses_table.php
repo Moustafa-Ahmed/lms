@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('image_url')->nullable();
             $table->boolean('is_published')->default(false)->index();
+            $table->unsignedInteger('lessons_count')->default(0);
+            $table->unsignedInteger('total_duration_seconds')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
