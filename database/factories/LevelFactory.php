@@ -15,7 +15,7 @@ class LevelFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Beginner',
+            'name' => fake()->unique()->randomElement(['Beginner', 'Intermediate', 'Advanced', 'Expert', 'Master']),
         ];
     }
 

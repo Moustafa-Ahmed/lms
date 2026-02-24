@@ -95,6 +95,37 @@ class Course extends Model
     }
 
     /**
+     * Appends `is_enrolled` and `is_completed` boolean columns for the given user.
+     *
+     * @param  Builder<Course>  $query
+     */
+    public function scopeWithEnrollmentStatusFor(Builder $query, User $user): void
+    {
+        $query
+            ->withExists(['enrollments as is_enrolled' => fn ($q) => $q->where('user_id', $user->id)])
+            ->withExists(['completions as is_completed' => fn ($q) => $q->where('user_id', $user->id)]);
+    }
+
+    /**
+     * Loads `is_enrolled` and `is_completed` onto an already-bound model instance
+     * using a single query, so downstream calls to User::isEnrolledIn() and
+     * User::hasCompletedCourse() skip the database.
+     */
+    public function loadEnrollmentStatusFor(User $user): static
+    {
+        $status = static::query()
+            ->select(['id'])
+            ->withEnrollmentStatusFor($user)
+            ->whereKey($this->getKey())
+            ->first();
+
+        $this->setAttribute('is_enrolled', (bool) $status?->is_enrolled);
+        $this->setAttribute('is_completed', (bool) $status?->is_completed);
+
+        return $this;
+    }
+
+    /**
      * @param  Builder<Course>  $query
      * @param  Collection<int, int>|array<int>  $courseIds
      */

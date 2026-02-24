@@ -20,7 +20,11 @@ class CourseController extends Controller
 
         $totalCourses = Course::published()->count();
 
-        return view('home.index', compact('totalCourses'));
+        $featuredCourse = Course::published()
+            ->with(['level', 'lessons' => fn ($q) => $q->orderBy('order')->limit(5)])
+            ->first();
+
+        return view('home.index', compact('totalCourses', 'featuredCourse'));
     }
 
     public function show(string $slug, GetCourseAction $action): View

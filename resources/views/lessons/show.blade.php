@@ -71,6 +71,13 @@
                         @endif
                     @endauth
 
+                    @if (session('success'))
+                        <div
+                            class="mt-4 p-4 bg-green-50 border border-green-100 rounded-xl text-green-700 text-sm font-medium">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     @if (session('info'))
                         <div
                             class="mt-4 p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-indigo-700 text-sm font-medium">

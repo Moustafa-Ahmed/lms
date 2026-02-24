@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LessonCompletionController;
+use App\Http\Controllers\LessonProgressController;
 use App\Http\Controllers\LessonShowController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::get('/courses/{course:slug}/lessons/{lesson}', [LessonShowController::cla
 Route::post('/courses/{course:slug}/lessons/{lesson}/complete', [LessonCompletionController::class, 'store'])
     ->middleware(['auth', 'verified'])
     ->name('lessons.complete');
+
+Route::post('/courses/{course:slug}/lessons/{lesson}/progress', [LessonProgressController::class, 'update'])
+    ->middleware(['auth', 'verified'])
+    ->name('lessons.progress');
 
 Route::post('/courses/{course:slug}/enroll', [CourseController::class, 'enroll'])
     ->middleware(['auth', 'verified'])

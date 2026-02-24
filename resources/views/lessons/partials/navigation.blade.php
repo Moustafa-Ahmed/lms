@@ -61,8 +61,7 @@
                             </path>
                         </svg>
                     </a>
-                @elseif(auth()->check() &&
-                        $course->enrollments()->where('user_id', auth()->id())->exists())
+                @elseif($isEnrolled)
                     <a href="{{ route('lessons.show', [$course->slug, $nextLesson->id]) }}"
                         class="lesson-nav-link group justify-end">
                         <div class="text-right">

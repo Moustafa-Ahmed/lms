@@ -1,7 +1,7 @@
 @extends('layouts.public', ['title' => 'Career 180 — The Developer Learning Platform'])
 
 @section('content')
-    @include('home.partials.hero', ['totalCourses' => $totalCourses])
+    @include('home.partials.hero', ['totalCourses' => $totalCourses, 'featuredCourse' => $featuredCourse])
     @include('home.partials.trusted')
     @include('home.partials.features')
 

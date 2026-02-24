@@ -65,47 +65,79 @@
             <div class="hero-visual">
 
                 {{-- Player card --}}
-                <div class="hero-player-card">
-                    <div class="hero-player-thumb">
-                        <div class="hero-play-btn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                                <path d="M5 3l14 9-14 9V3z" />
-                            </svg>
-                        </div>
-                        <span class="hero-player-time">14:32</span>
-                    </div>
-                    <div class="hero-player-body">
-                        <div class="hero-player-tag">Laravel</div>
-                        <div class="hero-player-title">Building REST APIs with Laravel &amp; Sanctum</div>
-                        <div class="hero-player-progress-wrap">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs text-slate-400 font-medium">Your progress</span>
-                                <span class="text-xs font-bold text-indigo-600">68%</span>
+                @if ($featuredCourse)
+                    @php
+                        $lessons = $featuredCourse->lessons;
+                        $doneCount = (int) ceil($lessons->count() * 0.6);
+                    @endphp
+                    <a href="{{ route('courses.show', $featuredCourse->slug) }}" class="hero-player-card block">
+                        <div class="hero-player-thumb"
+                            @if ($featuredCourse->image_url) style="background-image: url('{{ $featuredCourse->image_url }}'); background-size: cover; background-position: center;" @endif>
+                            <div class="hero-player-thumb-overlay"></div>
+                            <div class="hero-play-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                                    <path d="M5 3l14 9-14 9V3z" />
+                                </svg>
                             </div>
-                            <div class="hero-progress-bar">
-                                <div class="hero-progress-fill" style="width: 68%"></div>
-                            </div>
+                            @if ($featuredCourse->total_duration_seconds)
+                                <span class="hero-player-time">{{ $featuredCourse->formattedDuration() }}</span>
+                            @endif
                         </div>
-                        <div class="hero-lesson-list">
-                            @foreach ([[true, '1', 'Setting up the project'], [true, '2', 'Auth with Sanctum'], [true, '3', 'Resource controllers'], [false, '4', 'Testing your API'], [false, '5', 'Deployment & CI/CD']] as [$done, $num, $label])
-                                <div class="hero-lesson-item {{ $done ? 'hero-lesson-done' : '' }}">
-                                    <div class="hero-lesson-check">
-                                        @if ($done)
-                                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                                                <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        @else
-                                            <span
-                                                class="text-[9px] text-slate-400 font-bold leading-none">{{ $num }}</span>
-                                        @endif
-                                    </div>
-                                    <span>{{ $label }}</span>
+                        <div class="hero-player-body">
+                            @if ($featuredCourse->level)
+                                <div class="hero-player-tag">{{ $featuredCourse->level->name }}</div>
+                            @endif
+                            <div class="hero-player-title">{{ $featuredCourse->title }}</div>
+                            <div class="hero-player-progress-wrap">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-xs text-slate-400 font-medium">Your progress</span>
+                                    <span
+                                        class="text-xs font-bold text-indigo-600">{{ $doneCount > 0 ? round(($doneCount / max($lessons->count(), 1)) * 100) : 0 }}%</span>
                                 </div>
-                            @endforeach
+                                <div class="hero-progress-bar">
+                                    <div class="hero-progress-fill"
+                                        style="width: {{ $doneCount > 0 ? round(($doneCount / max($lessons->count(), 1)) * 100) : 0 }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            @if ($lessons->isNotEmpty())
+                                <div class="hero-lesson-list">
+                                    @foreach ($lessons as $index => $lesson)
+                                        @php $done = $index < $doneCount; @endphp
+                                        <div class="hero-lesson-item {{ $done ? 'hero-lesson-done' : '' }}">
+                                            <div class="hero-lesson-check">
+                                                @if ($done)
+                                                    <svg width="10" height="10" viewBox="0 0 12 12"
+                                                        fill="none">
+                                                        <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                @else
+                                                    <span
+                                                        class="text-[9px] text-slate-400 font-bold leading-none">{{ $index + 1 }}</span>
+                                                @endif
+                                            </div>
+                                            <span>{{ $lesson->title }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+                @else
+                    <div class="hero-player-card">
+                        <div class="hero-player-thumb">
+                            <div class="hero-play-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                                    <path d="M5 3l14 9-14 9V3z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="hero-player-body">
+                            <div class="hero-player-title">Courses coming soon</div>
                         </div>
                     </div>
-                </div>
+                @endif
 
             </div>
         </div>

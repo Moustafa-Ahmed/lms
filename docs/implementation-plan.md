@@ -76,7 +76,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 
 ### Tests
 
-- New file `tests/Feature/Lms/SchemaConstraintsTest.php`:
+- New file `tests/Feature/Course/SchemaConstraintsTest.php`:
     - unique slug enforced
     - unique enrollment enforced
     - unique completion enforced
@@ -108,7 +108,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
         - `app/Http/Controllers/CourseShowController.php`
         - `app/Http/Controllers/EnrollmentController.php`
 3. Actions:
-    - `app/Actions/LMS/EnrollInCourseAction.php`
+    - `app/Actions/course/EnrollInCourseAction.php`
         - Transactional
         - Reject unpublished course
         - `firstOrCreate` + unique index fallback handling for race safety
@@ -125,7 +125,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 
 ### Tests
 
-- `tests/Feature/Lms/CatalogAndEnrollmentTest.php`:
+- `tests/Feature/home/CatalogAndEnrollmentTest.php`:
     - home lists published only
     - guest cannot enroll
     - auth user can enroll published
@@ -150,7 +150,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
     - `GET /courses/{course:slug}/lessons/{lesson}`
     - `POST /courses/{course:slug}/lessons/{lesson}/complete` (auth)
 2. Access action:
-    - `app/Actions/LMS/AuthorizeLessonAccessAction.php`
+    - `app/Actions/Lesson/AuthorizeLessonAccessAction.php`
         - Preview lessons allowed for guests
         - Non-preview requires valid enrollment
 3. Controller:
@@ -172,7 +172,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 
 ### Tests
 
-- `tests/Feature/Lms/LessonAccessTest.php`:
+- `tests/Feature/Lesson/LessonAccessTest.php`:
     - preview accessible to guest
     - non-preview blocked for guest
     - non-preview allowed for enrolled user
@@ -197,12 +197,12 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
     - `app/Mail/CourseCompletionEmail.php`
     - Both implement queueing pattern (`ShouldQueue` on job/mailable strategy chosen consistently).
 2. Actions:
-    - `app/Actions/LMS/SendWelcomeEmailAction.php`
-    - `app/Actions/LMS/RecordLessonCompletionAction.php`
+    - `app/Actions/Email/SendWelcomeEmailAction.php`
+    - `app/Actions/Lesson/RecordLessonCompletionAction.php`
         - upsert lesson_progress row
         - set `started_at` when first interacted
         - set `completed_at` idempotently
-    - `app/Actions/LMS/FinalizeCourseCompletionAction.php`
+    - `app/Actions/Course/FinalizeCourseCompletionAction.php`
         - transactional check against current lesson set
         - create `course_completions` once
         - dispatch completion email once only
@@ -216,7 +216,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 
 ### Tests
 
-- `tests/Feature/Lms/ProgressAndCompletionTest.php`:
+- `tests/Feature/Lesson/ProgressAndCompletionTest.php`:
     - registration queues welcome email
     - completion writes lesson_progress
     - completing all lessons creates one completion row
@@ -260,7 +260,7 @@ It is split into 6 smaller phases with concrete files, routes, actions, tests, a
 
 ### Tests
 
-- `tests/Feature/Lms/AuthorizationIsolationTest.php`:
+- `tests/Feature/Course/AuthorizationIsolationTest.php`:
     - user cannot modify/read another user progress/enrollment
 - `tests/Feature/Admin/FilamentAccessTest.php`:
     - admin allowed, non-admin denied

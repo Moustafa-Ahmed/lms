@@ -4,23 +4,18 @@ namespace App\Actions\Lesson;
 
 use App\Models\Course;
 use App\Models\Lesson;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetLessonAction
 {
-    public function __invoke(Course $course, int $lessonId): array
+    /** @return array{lesson: Lesson, previousLesson: ?Lesson, nextLesson: ?Lesson} */
+    public function __invoke(Course $course, Lesson $lesson): array
     {
-        $lesson = Lesson::query()
-            ->where('course_id', $course->id)
-            ->where('id', $lessonId)
-            ->first();
+        // Use already-loaded relationship to avoid a redundant query.
+        $lessons = $course->relationLoaded('lessons')
+            ? $course->lessons
+            : $course->lessons()->orderBy('order')->get();
 
-        if (! $lesson) {
-            throw new ModelNotFoundException('Lesson not found.');
-        }
-
-        $lessons = $course->lessons()->orderBy('order')->get();
-        $currentIndex = $lessons->search(fn ($l) => $l->id === $lesson->id);
+        $currentIndex = $lessons->search(fn (Lesson $l) => $l->id === $lesson->id);
 
         return [
             'lesson' => $lesson,
