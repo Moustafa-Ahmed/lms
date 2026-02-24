@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Lesson\ShowLessonAction;
-use App\Exceptions\EnrollmentRequiredException;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\RedirectResponse;
@@ -24,12 +23,7 @@ class LessonShowController extends Controller
 
         $this->authorize('view', $lesson);
 
-        try {
-            $result = $action($course, $lesson, Auth::user());
-        } catch (EnrollmentRequiredException $e) {
-            return redirect()->route('courses.show', $e->course->slug)
-                ->with('enrollment_required', true);
-        }
+        $result = $action($course, $lesson, Auth::user());
 
         return view('lessons.show', $result);
     }

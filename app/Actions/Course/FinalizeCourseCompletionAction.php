@@ -5,8 +5,7 @@ namespace App\Actions\Course;
 use App\Models\Course;
 use App\Models\CourseCompletion;
 use App\Models\User;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 class FinalizeCourseCompletionAction
 {
@@ -34,23 +33,17 @@ class FinalizeCourseCompletionAction
             return null;
         }
 
-        return DB::transaction(function () use ($user, $course) {
-            try {
-                return CourseCompletion::query()->create([
-                    'user_id' => $user->id,
-                    'course_id' => $course->id,
-                    'completed_at' => now(),
-                ]);
-            } catch (QueryException $e) {
-                if (str_contains($e->getMessage(), 'course_completions_user_id_course_id_unique')) {
-                    return CourseCompletion::query()
-                        ->where('user_id', $user->id)
-                        ->where('course_id', $course->id)
-                        ->firstOrFail();
-                }
-
-                throw $e;
-            }
-        });
+        try {
+            return CourseCompletion::query()->create([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+                'completed_at' => now(),
+            ]);
+        } catch (UniqueConstraintViolationException $exception) {
+            return CourseCompletion::query()
+                ->where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->firstOrFail();
+        }
     }
 }

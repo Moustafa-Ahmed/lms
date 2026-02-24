@@ -91,6 +91,8 @@ php artisan test --filter="registration sends welcome email"
 
 - do a proper test base class with common setup and helper methods for authentication, course creation, enrollment, etc.
 - clean up the UI and add more visual polish (e.g. better mobile responsiveness, loading states, empty states, etc.)
+- there is work to be done regarding the file structure and organization of the codebase it's not to my liking to be honest in this current state .
+- use translation files instead of hardcoded strings in views and validation messages.
 - reduce the number of database queries as much as possible.
 - add caching strategies for expensive queries .
 - Implement a certificate PDF generated on course completion using a queued job.

@@ -64,3 +64,41 @@ test('authenticated but not enrolled user cannot view non-preview lesson', funct
         ->get(route('lessons.show', [$course->slug, $lesson->id]))
         ->assertForbidden();
 });
+
+test('guest sees enroll modal trigger when next lesson requires enrollment', function () {
+    $course = Course::factory()->published()->create();
+
+    $currentLesson = Lesson::factory()->for($course)->create([
+        'order' => 1,
+        'is_free_preview' => true,
+    ]);
+
+    Lesson::factory()->for($course)->create([
+        'order' => 2,
+        'is_free_preview' => false,
+    ]);
+
+    $this->get(route('lessons.show', [$course->slug, $currentLesson->id]))
+        ->assertOk()
+        ->assertSee('Next Lesson')
+        ->assertSee('Enroll to Continue');
+});
+
+test('guest sees enroll modal trigger when previous lesson requires enrollment', function () {
+    $course = Course::factory()->published()->create();
+
+    Lesson::factory()->for($course)->create([
+        'order' => 1,
+        'is_free_preview' => false,
+    ]);
+
+    $currentLesson = Lesson::factory()->for($course)->create([
+        'order' => 2,
+        'is_free_preview' => true,
+    ]);
+
+    $this->get(route('lessons.show', [$course->slug, $currentLesson->id]))
+        ->assertOk()
+        ->assertSee('Previous Lesson')
+        ->assertSee('Enroll to Continue');
+});

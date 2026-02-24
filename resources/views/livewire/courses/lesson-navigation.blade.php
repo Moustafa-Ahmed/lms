@@ -22,19 +22,34 @@
     <div class="lesson-nav">
         <div class="lesson-nav-prev">
             @if ($previousLesson)
-                <a href="{{ route('lessons.show', [$course->slug, $previousLesson->id]) }}"
-                    class="lesson-nav-link group">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-500 transition-colors" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                        </path>
-                    </svg>
-                    <div>
-                        <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Previous</div>
-                        <div class="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
-                            {{ $previousLesson->title }}</div>
-                    </div>
-                </a>
+                @if ($canAccessPreviousLesson)
+                    <a href="{{ route('lessons.show', [$course->slug, $previousLesson->id]) }}"
+                        class="lesson-nav-link group">
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-indigo-500 transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                            </path>
+                        </svg>
+                        <div>
+                            <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Previous</div>
+                            <div class="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
+                                {{ $previousLesson->title }}</div>
+                        </div>
+                    </a>
+                @else
+                    <button type="button" @click="showEnrollModal = true"
+                        class="lesson-nav-enroll group w-full justify-start">
+                        <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                            </path>
+                        </svg>
+                        <div class="text-left">
+                            <div class="text-[10px] uppercase tracking-wider font-semibold opacity-70">Previous Lesson
+                            </div>
+                            <div class="text-sm font-medium">Enroll to Continue</div>
+                        </div>
+                    </button>
+                @endif
             @endif
         </div>
 
@@ -79,7 +94,7 @@
 
     <div class="lesson-nav-next">
         @if ($nextLesson)
-            @if ($nextLesson->is_free_preview || auth()->check())
+            @if ($canAccessNextLesson)
                 <a href="{{ route('lessons.show', [$course->slug, $nextLesson->id]) }}"
                     class="lesson-nav-link group justify-end">
                     <div class="text-right">
@@ -96,7 +111,8 @@
             @else
                 <button type="button" @click="showEnrollModal = true" class="lesson-nav-enroll group">
                     <div class="text-right">
-                        <div class="text-[10px] uppercase tracking-wider font-semibold opacity-70">Next Lesson</div>
+                        <div class="text-[10px] uppercase tracking-wider font-semibold opacity-70">Next Lesson
+                        </div>
                         <div class="text-sm font-medium">Enroll to Continue</div>
                     </div>
                     <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">

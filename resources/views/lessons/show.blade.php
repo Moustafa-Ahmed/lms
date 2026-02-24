@@ -47,23 +47,15 @@
 
                         {{-- Navigation --}}
                         <div class="lesson-nav-wrap fade-up fade-up-d2">
-                            <livewire:courses.lesson-navigation
-                                :course="$course"
-                                :current-lesson="$lesson"
-                                :previous-lesson="$previousLesson"
-                                :next-lesson="$nextLesson"
-                            />
+                            <livewire:courses.lesson-navigation :course="$course" :current-lesson="$lesson" :previous-lesson="$previousLesson"
+                                :next-lesson="$nextLesson" :is-enrolled="$isEnrolled" />
                         </div>
                     </div>
 
                     @auth
                         @if ($isEnrolled)
-                            <div
-                                x-data="{ pct: {{ $progressPercentage }} }"
-                                @progress-updated.window="pct = $event.detail.percentage"
-                                x-show="pct > 0"
-                                class="lesson-progress-bar fade-up fade-up-d3"
-                            >
+                            <div x-data="{ pct: {{ $progressPercentage }} }" @progress-updated.window="pct = $event.detail.percentage"
+                                x-show="pct > 0" class="lesson-progress-bar fade-up fade-up-d3">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Course
                                         Progress</span>

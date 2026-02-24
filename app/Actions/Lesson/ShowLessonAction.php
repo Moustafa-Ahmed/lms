@@ -2,7 +2,6 @@
 
 namespace App\Actions\Lesson;
 
-use App\Exceptions\EnrollmentRequiredException;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonProgress;
@@ -25,8 +24,6 @@ class ShowLessonAction
      *     completedLessons: array<int, int>,
      *     progressPercentage: int,
      * }
-     *
-     * @throws EnrollmentRequiredException
      */
     public function __invoke(Course $course, Lesson $lesson, ?User $user): array
     {
@@ -39,10 +36,6 @@ class ShowLessonAction
         if ($user) {
             $course->loadEnrollmentStatusFor($user);
             $isEnrolled = $user->isEnrolledIn($course);
-
-            if (! $isEnrolled && ! $lesson->is_free_preview) {
-                throw new EnrollmentRequiredException($course);
-            }
 
             if ($isEnrolled) {
                 $completedLessons = LessonProgress::query()

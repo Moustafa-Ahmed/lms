@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Lesson\TrackWatchTimeAction;
+use App\Http\Requests\TrackLessonProgressRequest;
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class LessonProgressController extends Controller
 {
-    public function update(Request $request, Course $course, Lesson $lesson, TrackWatchTimeAction $action): JsonResponse
+    public function update(TrackLessonProgressRequest $request, Course $course, Lesson $lesson, TrackWatchTimeAction $action): JsonResponse
     {
         if ($lesson->course_id !== $course->id) {
             abort(404);
@@ -18,9 +18,7 @@ class LessonProgressController extends Controller
 
         $this->authorize('complete', $lesson);
 
-        $validated = $request->validate([
-            'watch_seconds' => ['required', 'integer', 'min:0'],
-        ]);
+        $validated = $request->validated();
 
         $progress = $action($request->user(), $lesson, $validated['watch_seconds']);
 
