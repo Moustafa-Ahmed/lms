@@ -10,7 +10,7 @@
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
-                <h3 class="font-bold text-gray-900 text-sm truncate" style="font-family: var(--heading-font);">
+                <h3 class="font-bold text-gray-900 text-sm truncate font-heading">
                     {{ $course->title }}</h3>
                 <p class="text-xs text-gray-400 mt-0.5">{{ $course->lessons->count() }} lessons</p>
             </div>
@@ -23,7 +23,7 @@
                         <span class="font-bold text-indigo-500">{{ $progressPercentage }}%</span>
                     </div>
                     <div class="h-1 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full lesson-progress-fill rounded-full" style="width: {{ $progressPercentage }}%">
+                        <div class="h-full lesson-progress-fill rounded-full" :style="'width: {{ $progressPercentage }}%'">
                         </div>
                     </div>
                 </div>
@@ -131,17 +131,3 @@
         @endauth
     </div>
 </div>
-
-<style>
-    .lesson-sidebar {
-        background: #fff;
-        border-left: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    @media (max-width: 1024px) {
-        .lesson-sidebar {
-            border-left: none;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-        }
-    }
-</style>

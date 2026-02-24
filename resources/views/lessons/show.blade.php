@@ -1,4 +1,4 @@
-@extends('layouts.public', [
+@extends('layouts.lesson', [
     'title' => $lesson->title . ' — ' . $course->title . ' — Career 180',
     'description' => 'Watch ' . $lesson->title . ' from ' . $course->title . ' on Career 180.',
 ])
@@ -65,8 +65,7 @@
                                     <span class="text-sm font-bold text-indigo-500">{{ $progressPercentage }}%</span>
                                 </div>
                                 <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full lesson-progress-fill rounded-full"
-                                        style="width: {{ $progressPercentage }}%"></div>
+                                    <div class="h-full lesson-progress-fill rounded-full" :style="'width: {{ $progressPercentage }}%'"></div>
                                 </div>
                             </div>
                         @endif
