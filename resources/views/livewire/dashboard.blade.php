@@ -17,7 +17,7 @@
                     <a href="{{ route('courses.show', $course->slug) }}" class="dash-course-card group"
                         wire:key="enrolled-{{ $course->id }}">
                         <div class="dash-course-img-wrap">
-                            <img src="{{ $course->image_url ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=70' }}"
+                            <img src="{{ $course->image_url ?: asset('images/placeholder.jpg') }}"
                                 alt="{{ $course->title }}" class="dash-course-img" loading="lazy">
                             @if ($isCompleted)
                                 <div class="dash-completed-badge">
@@ -89,7 +89,7 @@
                     <a href="{{ route('courses.show', $course->slug) }}" class="c-card block group"
                         wire:key="available-{{ $course->id }}">
                         <div class="overflow-hidden">
-                            <img src="{{ $course->image_url ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=70' }}"
+                            <img src="{{ $course->image_url ?: asset('images/placeholder.jpg') }}"
                                 alt="{{ $course->title }}"
                                 class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                 loading="lazy">

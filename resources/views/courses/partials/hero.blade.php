@@ -24,8 +24,8 @@
             </div>
 
             <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
-                <img src="{{ $course->image_url ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=70' }}"
-                    alt="{{ $course->title }}" width="800" height="256" fetchpriority="high" decoding="async"
+                <img src="{{ $course->image_url ?: asset('images/placeholder.jpg') }}" alt="{{ $course->title }}"
+                    width="800" height="256" fetchpriority="high" decoding="async"
                     class="w-full h-64 object-cover">
             </div>
         </div>

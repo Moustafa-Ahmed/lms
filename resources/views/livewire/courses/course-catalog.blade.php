@@ -14,8 +14,8 @@
             <a href="{{ route('courses.show', $course->slug) }}" class="c-card block group"
                 wire:key="course-{{ $course->id }}">
                 <div class="overflow-hidden">
-                    <img src="{{ $course->image_url ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=70' }}"
-                        alt="{{ $course->title }}" width="600" height="176" loading="lazy" decoding="async"
+                    <img src="{{ $course->image_url ?: asset('images/placeholder.jpg') }}" alt="{{ $course->title }}"
+                        width="600" height="176" loading="lazy" decoding="async"
                         class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
                 </div>
                 <div class="p-6">
