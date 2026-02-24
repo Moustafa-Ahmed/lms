@@ -14,11 +14,12 @@
 </head>
 
 <body class="font-sans bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+    <div class="h-1 bg-teal-600"></div>
     <!-- Header -->
     <header class="bg-white border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <a href="{{ route('home') }}" class="text-xl font-black tracking-tight">
-                Career<span class="text-indigo-600">180</span>
+                Career<span class="text-teal-600">180</span>
             </a>
         </div>
     </header>

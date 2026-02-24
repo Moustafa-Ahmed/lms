@@ -1,8 +1,8 @@
 /* Shared Public Page Styles */
 :root {
-    --indigo: #6366f1;
-    --indigo-dark: #4f46e5;
-    --violet: #7c3aed;
+    --indigo: #0d9488;
+    --indigo-dark: #0f766e;
+    --violet: #0891b2;
     --surface: #f9fafb;
     --border: #e5e7eb;
     --muted: #6b7280;
@@ -74,7 +74,7 @@
 }
 
 .nav-mobile-link:hover {
-    background: rgba(99, 102, 241, 0.06);
+    background: rgba(13, 148, 136, 0.06);
     color: #111827;
 }
 
@@ -129,39 +129,22 @@
 
 /* Buttons */
 .btn-indigo {
-    background: linear-gradient(135deg, var(--indigo) 0%, var(--violet) 100%);
+    background: var(--indigo);
     color: #fff;
     border-radius: 12px;
     font-weight: 600;
     font-family: var(--body-font);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-indigo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--indigo-dark) 0%, #6d28d9 100%);
-    opacity: 0;
-    transition: opacity 0.3s;
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+    box-shadow: 0 1px 4px rgba(13, 148, 136, 0.2);
 }
 
 .btn-indigo:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.35);
-}
-
-.btn-indigo:hover::before {
-    opacity: 1;
-}
-
-.btn-indigo span,
-.btn-indigo:not(:has(span)) {
-    position: relative;
-    z-index: 1;
+    background: var(--indigo-dark);
+    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+    transform: translateY(-1px);
 }
 
 .btn-indigo:disabled {
@@ -184,7 +167,7 @@
 .btn-ghost:hover {
     border-color: var(--indigo);
     color: var(--indigo);
-    background: rgba(99, 102, 241, 0.04);
+    background: rgba(13, 148, 136, 0.04);
     transform: translateY(-1px);
 }
 
@@ -238,9 +221,9 @@
 
 .section-tag::before {
     content: "";
-    width: 20px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--indigo), var(--violet));
+    width: 3px;
+    height: 14px;
+    background: var(--indigo);
     border-radius: 2px;
 }
 

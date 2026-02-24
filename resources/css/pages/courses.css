@@ -12,15 +12,15 @@
 
 .lesson-item:hover {
     border-color: var(--indigo);
-    background: #FAFAFF;
+    background: #fafaff;
 }
 
 .lesson-item.preview {
-    background: linear-gradient(135deg, #FAFAFF 0%, #F5F3FF 100%);
+    background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
 }
 
 .lesson-item.completed {
-    border-color: #86EFAC;
+    border-color: #86efac;
 }
 
 .lesson-num {
@@ -42,10 +42,14 @@
     font-weight: 700;
     padding: 2px 6px;
     border-radius: 4px;
-    background: #EEF2FF;
-    color: var(--indigo);
+    background: #ccfbf1;
+    color: #0d9488;
 }
 
 .hero-gradient {
-    background: radial-gradient(ellipse 80% 60% at 60% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+    background: radial-gradient(
+        ellipse 80% 60% at 60% 50%,
+        rgba(13, 148, 136, 0.07) 0%,
+        transparent 70%
+    );
 }

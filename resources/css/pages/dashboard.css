@@ -53,8 +53,8 @@
 .dash-browse-btn:hover {
     border-color: var(--indigo);
     color: var(--indigo);
-    background: rgba(99, 102, 241, 0.04);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+    background: rgba(13, 148, 136, 0.04);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.1);
 }
 
 /* ── Section headers ── */
@@ -83,7 +83,7 @@
     border-radius: 7px;
     font-size: 0.7rem;
     font-weight: 700;
-    background: rgba(99, 102, 241, 0.08);
+    background: rgba(13, 148, 136, 0.08);
     color: var(--indigo);
 }
 
@@ -105,10 +105,10 @@
 }
 
 .dash-course-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     border-color: transparent;
     box-shadow:
-        0 16px 40px rgba(99, 102, 241, 0.1),
+        0 12px 32px rgba(15, 23, 42, 0.1),
         0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
@@ -166,7 +166,7 @@
     font-size: 0.7rem;
     font-weight: 800;
     color: #fff;
-    background: rgba(99, 102, 241, 0.9);
+    background: rgba(13, 148, 136, 0.9);
     backdrop-filter: blur(6px);
 }
 
@@ -186,6 +186,6 @@
     width: 56px;
     height: 56px;
     border-radius: 14px;
-    background: rgba(99, 102, 241, 0.08);
+    background: rgba(13, 148, 136, 0.08);
     color: var(--indigo);
 }

@@ -4,18 +4,19 @@
         {{-- Logo --}}
         <div class="flex items-center gap-10">
             <a href="{{ route('home') }}" class="site-logo shrink-0">
-                Career<span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500">180</span>
+                Career<span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-sky-500">180</span>
             </a>
 
             {{-- Desktop nav --}}
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-500">
                 <a href="{{ route('home') }}#courses"
                     class="hover:text-slate-900 transition-colors duration-200">Courses</a>
-                <a href="{{ route('home') }}#features"
-                    class="hover:text-slate-900 transition-colors duration-200">Features</a>
-                <a href="{{ route('home') }}#how" class="hover:text-slate-900 transition-colors duration-200">How it
-                    works</a>
+                @guest
+                    <a href="{{ route('home') }}#features"
+                        class="hover:text-slate-900 transition-colors duration-200">Features</a>
+                    <a href="{{ route('home') }}#how" class="hover:text-slate-900 transition-colors duration-200">How it
+                        works</a>
+                @endguest
                 @isset($navigation)
                     {{ $navigation }}
                 @endisset
@@ -75,8 +76,10 @@
         @click.outside="mobileOpen = false">
         <nav class="flex flex-col gap-1 py-3">
             <a href="{{ route('home') }}#courses" @click="mobileOpen = false" class="nav-mobile-link">Courses</a>
-            <a href="{{ route('home') }}#features" @click="mobileOpen = false" class="nav-mobile-link">Features</a>
-            <a href="{{ route('home') }}#how" @click="mobileOpen = false" class="nav-mobile-link">How it works</a>
+            @guest
+                <a href="{{ route('home') }}#features" @click="mobileOpen = false" class="nav-mobile-link">Features</a>
+                <a href="{{ route('home') }}#how" @click="mobileOpen = false" class="nav-mobile-link">How it works</a>
+            @endguest
             @isset($navigation)
                 {{ $navigation }}
             @endisset
