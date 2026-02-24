@@ -9,22 +9,36 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Course extends Model
+class Course extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\CourseFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, InteractsWithMedia, SoftDeletes;
 
     protected $fillable = [
         'level_id',
         'title',
         'slug',
         'description',
-        'image_url',
         'is_published',
         'lessons_count',
         'total_duration_seconds',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('course_image')
+            ->singleFile()
+            ->useDisk('public')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('course_image');
+    }
 
     /** @return array<string, string> */
     protected function casts(): array

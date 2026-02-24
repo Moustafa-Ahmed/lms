@@ -31,7 +31,8 @@ class GetDashboardDataAction
             ->with('lesson')
             ->completed()
             ->get()
-            ->groupBy(fn ($lp) => $lp->lesson->course_id ?? null)
+            ->filter(fn ($lp) => $lp->lesson !== null)
+            ->groupBy(fn ($lp) => $lp->lesson->course_id)
             ->map->count();
 
         $completedCourseIds = $user->courseCompletions()->pluck('course_id');

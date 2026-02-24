@@ -16,7 +16,6 @@ class LessonFactory extends Factory
             'course_id' => Course::factory(),
             'title' => fake()->sentence(5),
             'order' => fake()->unique()->numberBetween(1, 1000),
-            'video_url' => asset('storage/videos/demo.mp4'),
             'duration_seconds' => fake()->numberBetween(60, 3600),
             'is_free_preview' => false,
         ];

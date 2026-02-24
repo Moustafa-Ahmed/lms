@@ -22,7 +22,6 @@ class CourseFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => fake()->paragraph(),
-            'image_url' => null,
             'is_published' => false,
             'lessons_count' => 0,
             'total_duration_seconds' => 0,

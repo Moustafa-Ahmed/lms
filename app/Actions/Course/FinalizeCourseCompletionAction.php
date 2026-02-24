@@ -18,14 +18,15 @@ class FinalizeCourseCompletionAction
      */
     public function __invoke(User $user, Course $course): ?CourseCompletion
     {
-        $totalLessons = $course->lessons()->count();
+        $lessons = $course->lessons()->get(['id']);
+        $totalLessons = $lessons->count();
 
         if ($totalLessons === 0) {
             return null;
         }
 
         $completedCount = $user->lessonProgress()
-            ->whereIn('lesson_id', $course->lessons()->pluck('id'))
+            ->whereIn('lesson_id', $lessons->pluck('id'))
             ->whereNotNull('completed_at')
             ->count();
 

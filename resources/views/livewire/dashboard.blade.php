@@ -72,10 +72,7 @@
                 </div>
                 <h3 class="text-lg font-bold text-gray-900 mt-4" style="font-family: var(--heading-font);">No
                     courses yet</h3>
-                <p class="text-sm text-gray-400 mt-1 mb-5">Enroll in a course to start learning</p>
-                <a href="{{ route('home') }}#courses" class="btn-indigo inline-flex px-6 py-2.5 text-sm">
-                    <span>Browse Courses</span>
-                </a>
+                <p class="text-sm text-gray-400 mt-1">Enroll in a course to start learning</p>
             </div>
         </section>
     @endif
