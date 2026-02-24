@@ -10,6 +10,7 @@ It covers the end-to-end system design for:
 - Authentication and registration with welcome email dispatch.
 - Enrollment and learner access controls.
 - Course and lesson learning experience with video playback.
+- Course/lesson media management via Spatie Media Library.
 - Progress tracking and completion detection.
 - Course completion email dispatch.
 - Admin operations with Filament resources and dashboard metrics.
@@ -38,7 +39,7 @@ It covers the end-to-end system design for:
 - User: learner/admin account identity.
 - Level: difficulty grouping for courses.
 - Course: publishable learning container with slug and metadata.
-- Lesson: ordered unit inside a course with video URL and preview flag.
+- Lesson: ordered unit inside a course with media-backed video and preview flag.
 - Enrollment: membership of user in course.
 - LessonProgress: per-user, per-lesson state including watch/completion timing.
 - CourseCompletion: per-user, per-course completion record.
@@ -70,24 +71,27 @@ It covers the end-to-end system design for:
 
 - Controllers/components invoke actions.
 - Actions coordinate model reads/writes and dispatch infrastructure work.
+- Controllers may contain lightweight page composition/read orchestration, while business rules remain in actions.
 - Models do not call UI or controller concerns.
 - Mail sending occurs through queued jobs/events from actions.
 
 ## 5) Action Pattern Strategy
 
-All core flows follow strict action conventions:
+Core write flows follow strict action conventions:
 
 - One core flow maps to one invokable action.
 - Write actions own transaction boundaries.
 - Critical flows must be idempotent under retries and rapid repeated requests.
 - Domain-safe exceptions are surfaced for predictable failure behavior.
 
+Read flows may use actions or lightweight controller/query composition depending on complexity, while preserving thin-controller boundaries for business decisions.
+
 ### Conceptual Action Categories
 
 - Enrollment actions:
     - Validate course eligibility and create enrollment idempotently.
 - Progress actions:
-    - Record lesson progress and completion state.
+    - Record lesson watch-time/progress and completion state.
 - Completion actions:
     - Detect and persist course completion; trigger email once.
 - Access actions:
@@ -124,12 +128,25 @@ All core flows follow strict action conventions:
 4. If complete, create one course completion record.
 5. Queue completion email once using idempotent guard.
 
+### Flow D1: Watch-Time Progress Tracking
+
+1. Authenticated enrolled user reports lesson watch seconds.
+2. Progress action upserts per-user, per-lesson watch state.
+3. Unique `(user_id, lesson_id)` constraint ensures single logical progress row.
+4. Response returns current persisted watch progress for player continuity.
+
 ### Flow E: Course Detail Entry Point
 
 1. `/courses/{slug}` resolves course by unique slug.
 2. Page shows metadata, level, description, and ordered lessons.
 3. UI determines enroll/continue call-to-action from enrollment state.
 4. Guests see preview lessons only.
+
+### Flow F: Media Delivery Model
+
+1. Course images and lesson media are stored through media collections.
+2. UI reads computed media URLs from model accessors.
+3. Domain logic remains independent of storage backend specifics.
 
 ## 7) Authorization and Data Isolation
 
@@ -202,6 +219,7 @@ Data access standards:
 - Use eager loading for courses, levels, lessons, and progress relations to prevent N+1.
 - Prefer aggregate queries for completion percentages.
 - Use indexed lookups for slug and user-course/lesson keys.
+- Prefer precomputed/projection-friendly fields for lesson count and duration where available.
 
 Suggested index focus:
 
@@ -219,12 +237,16 @@ Behavioral matrix must validate:
 4. Enrollment is idempotent.
 5. Preview lessons are accessible to guests.
 6. Non-preview lessons require enrollment.
-7. Lesson completion writes progress state.
+7. Lesson watch-time tracking writes progress state with user isolation.
 8. Full-course completion creates one completion record.
 9. Completion email is sent once under retries/rapid updates.
 10. Policies prevent cross-user modification/access.
 11. Filament admin area is admin-only.
 12. Constraint and transactional consistency scenarios are enforced.
+
+Additional expected coverage:
+
+13. Media-backed course/lesson rendering works when media exists and degrades safely when absent.
 
 ## 13) Milestones
 

@@ -103,7 +103,7 @@ php artisan test --filter="registration sends welcome email"
 
 ## Test Screenshot
 
-_(Add a screenshot of all passing tests here)_
+![All passing tests](docs/tests.png)
 
 ## Database ERD
 
