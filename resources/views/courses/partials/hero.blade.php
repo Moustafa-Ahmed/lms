@@ -16,12 +16,6 @@
 
                 <livewire:courses.enroll-button :course="$course" />
 
-                @if (session('status'))
-                    <div class="mt-4 p-3 bg-green-50 text-green-700 text-sm rounded-lg">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
                 @if (session('enrollment_required'))
                     <div class="mt-4 p-3 bg-amber-50 text-amber-700 text-sm rounded-lg">
                         You need to enroll in this course to view that lesson.

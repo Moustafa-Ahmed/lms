@@ -23,7 +23,7 @@
                         <span class="font-bold text-indigo-500">{{ $progressPercentage }}%</span>
                     </div>
                     <div class="h-1 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full lesson-progress-fill rounded-full" :style="'width: {{ $progressPercentage }}%'">
+                        <div class="h-full lesson-progress-fill rounded-full" style="width: {{ $progressPercentage }}%">
                         </div>
                     </div>
                 </div>
@@ -35,18 +35,19 @@
     <div class="flex-1 overflow-y-auto">
         <div class="p-3 pt-4">
             <h4 class="sidebar-section-label">Course Content</h4>
-            @foreach ($course->lessons->sortBy('order') as $index => $lesson)
+            @foreach ($course->lessons->sortBy('order') as $index => $sidebarLesson)
                 @php
-                    $canAccess = $lesson->is_free_preview || ($isEnrolled && auth()->check());
-                    $isCurrent = $lesson->id === $currentLesson->id;
-                    $isCompleted = isset($completedLessons[$lesson->id]);
+                    $canAccess = $sidebarLesson->is_free_preview || ($isEnrolled && auth()->check());
+                    $isCurrent = $sidebarLesson->id === $currentLesson->id;
+                    $isLessonCompleted = isset($completedLessons[$sidebarLesson->id]);
                 @endphp
-                <div class="sidebar-lesson {{ $isCurrent ? 'sidebar-lesson-current' : '' }} mb-0.5">
+                <div wire:key="sidebar-lesson-{{ $sidebarLesson->id }}"
+                    class="sidebar-lesson {{ $isCurrent ? 'sidebar-lesson-current' : '' }} mb-0.5">
                     @if ($canAccess)
-                        <a href="{{ route('lessons.show', [$course->slug, $lesson->id]) }}"
+                        <a href="{{ route('lessons.show', [$course->slug, $sidebarLesson->id]) }}"
                             class="sidebar-lesson-link group">
                             <div class="flex-shrink-0 mt-0.5">
-                                @if ($isCompleted)
+                                @if ($isLessonCompleted)
                                     <div class="sidebar-num sidebar-num-done">
                                         <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -63,16 +64,16 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span
-                                    class="text-[13px] font-medium leading-snug {{ $isCurrent ? 'text-indigo-600' : 'text-gray-600 group-hover:text-gray-900' }} {{ $isCompleted ? 'line-through opacity-50' : '' }} block truncate transition-colors">
-                                    {{ $lesson->title }}
+                                    class="text-[13px] font-medium leading-snug {{ $isCurrent ? 'text-indigo-600' : 'text-gray-600 group-hover:text-gray-900' }} {{ $isLessonCompleted ? 'line-through opacity-50' : '' }} block truncate transition-colors">
+                                    {{ $sidebarLesson->title }}
                                 </span>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    @if ($lesson->is_free_preview)
+                                    @if ($sidebarLesson->is_free_preview)
                                         <span class="sidebar-free-tag">FREE</span>
                                     @endif
-                                    @if ($lesson->duration_seconds)
+                                    @if ($sidebarLesson->duration_seconds)
                                         <span
-                                            class="text-[11px] text-gray-400">{{ floor($lesson->duration_seconds / 60) }}m</span>
+                                            class="text-[11px] text-gray-400">{{ floor($sidebarLesson->duration_seconds / 60) }}m</span>
                                     @endif
                                 </div>
                             </div>
@@ -90,10 +91,10 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span
-                                    class="text-[13px] font-medium text-gray-400 truncate block">{{ $lesson->title }}</span>
-                                @if ($lesson->duration_seconds)
+                                    class="text-[13px] font-medium text-gray-400 truncate block">{{ $sidebarLesson->title }}</span>
+                                @if ($sidebarLesson->duration_seconds)
                                     <span
-                                        class="text-[11px] text-gray-300">{{ floor($lesson->duration_seconds / 60) }}m</span>
+                                        class="text-[11px] text-gray-300">{{ floor($sidebarLesson->duration_seconds / 60) }}m</span>
                                 @endif
                             </div>
                         </div>

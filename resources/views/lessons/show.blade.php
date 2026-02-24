@@ -47,56 +47,41 @@
 
                         {{-- Navigation --}}
                         <div class="lesson-nav-wrap fade-up fade-up-d2">
-                            @include('lessons.partials.navigation', [
-                                'course' => $course,
-                                'currentLesson' => $lesson,
-                                'previousLesson' => $previousLesson,
-                                'nextLesson' => $nextLesson,
-                            ])
+                            <livewire:courses.lesson-navigation
+                                :course="$course"
+                                :current-lesson="$lesson"
+                                :previous-lesson="$previousLesson"
+                                :next-lesson="$nextLesson"
+                            />
                         </div>
                     </div>
 
                     @auth
-                        @if ($isEnrolled && $progressPercentage > 0)
-                            <div class="lesson-progress-bar fade-up fade-up-d3">
+                        @if ($isEnrolled)
+                            <div
+                                x-data="{ pct: {{ $progressPercentage }} }"
+                                @progress-updated.window="pct = $event.detail.percentage"
+                                x-show="pct > 0"
+                                class="lesson-progress-bar fade-up fade-up-d3"
+                            >
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Course
                                         Progress</span>
-                                    <span class="text-sm font-bold text-indigo-500">{{ $progressPercentage }}%</span>
+                                    <span class="text-sm font-bold text-indigo-500" x-text="pct + '%'"></span>
                                 </div>
                                 <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full lesson-progress-fill rounded-full" :style="'width: {{ $progressPercentage }}%'"></div>
+                                    <div class="h-full lesson-progress-fill rounded-full" :style="'width: ' + pct + '%'"></div>
                                 </div>
                             </div>
                         @endif
                     @endauth
-
-                    @if (session('success'))
-                        <div
-                            class="mt-4 p-4 bg-green-50 border border-green-100 rounded-xl text-green-700 text-sm font-medium">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if (session('info'))
-                        <div
-                            class="mt-4 p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-indigo-700 text-sm font-medium">
-                            {{ session('info') }}
-                        </div>
-                    @endif
                 </div>
             </div>
 
             {{-- Sidebar --}}
             <div class="hidden lg:block lg:w-80 xl:w-96 flex-shrink-0 pb-12">
                 <div class="sticky top-[72px] h-[calc(100vh-72px)]">
-                    @include('lessons.partials.sidebar', [
-                        'course' => $course,
-                        'currentLesson' => $lesson,
-                        'isEnrolled' => $isEnrolled,
-                        'completedLessons' => $completedLessons,
-                        'progressPercentage' => $progressPercentage,
-                    ])
+                    <livewire:courses.lesson-sidebar :course="$course" :current-lesson="$lesson" />
                 </div>
             </div>
         </div>
