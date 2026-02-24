@@ -106,7 +106,7 @@ class CourseSeeder extends Seeder
             'system-design-masterclass' => 'system-design-masterclass.jpg',
         ];
 
-        $imagesPath = storage_path('app/public/images/courses');
+        $imagesPath = resource_path('demo/images/courses');
 
         foreach ($courses as $course) {
             $model = Course::firstOrCreate(

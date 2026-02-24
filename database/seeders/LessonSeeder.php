@@ -18,9 +18,9 @@ class LessonSeeder extends Seeder
             return;
         }
 
-        $demoVideo = storage_path('app/public/videos/demo.mp4');
+        $demoVideo = resource_path('demo/videos/demo.mp4');
 
-        $lessonImagesPath = storage_path('app/public/images/lessons');
+        $lessonImagesPath = resource_path('demo/images/lessons');
         $lessonThumbnails = [
             "{$lessonImagesPath}/lesson-1.png",
             "{$lessonImagesPath}/lesson-2.jpg",
