@@ -37,9 +37,11 @@ cp .env.example .env
 # Generate app key
 php artisan key:generate
 
-# Configure your database in .env (DB_CONNECTION, DB_DATABASE, etc.)
+#link storage
+php artisan storage:link
 
 # Run migrations and seed the database
+Configure your database in .env (DB_CONNECTION, DB_DATABASE, etc.)
 php artisan migrate --seed
 
 # Build frontend assets
