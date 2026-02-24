@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class CourseCompletionMail extends Mailable implements ShouldQueue
@@ -20,6 +21,18 @@ class CourseCompletionMail extends Mailable implements ShouldQueue
         public User $user,
         public Course $course,
     ) {}
+
+    /**
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("course-completion-mail:{$this->user->getKey()}:{$this->course->getKey()}"))
+                ->shared()
+                ->expireAfter(300),
+        ];
+    }
 
     public function envelope(): Envelope
     {

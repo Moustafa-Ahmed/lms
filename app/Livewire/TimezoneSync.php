@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Support\UserTimezone;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -11,10 +12,12 @@ class TimezoneSync extends Component
     #[On('updateUserTimezone')]
     public function updateUserTimezone(string $timezone): void
     {
-        session(['userTimezone' => $timezone]);
+        $normalizedTimezone = UserTimezone::normalize($timezone);
 
-        if (Auth::check() && Auth::user()->timezone !== $timezone) {
-            Auth::user()->forceFill(['timezone' => $timezone])->saveQuietly();
+        session(['userTimezone' => $normalizedTimezone]);
+
+        if (Auth::check() && Auth::user()->timezone !== $normalizedTimezone) {
+            Auth::user()->forceFill(['timezone' => $normalizedTimezone])->saveQuietly();
         }
     }
 

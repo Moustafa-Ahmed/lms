@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use App\Support\UserTimezone;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -75,17 +76,17 @@ class EnrollmentsRelationManager extends RelationManager
                             return '0%';
                         }
 
-                        return round(($record->completed_lessons / $total) * 100) . '%';
+                        return round(($record->completed_lessons / $total) * 100).'%';
                     }),
 
                 Tables\Columns\IconColumn::make('course_completed')
                     ->label('Completed')
-                    ->getStateUsing(fn($record): bool => (int) $record->has_completion > 0)
+                    ->getStateUsing(fn ($record): bool => (int) $record->has_completion > 0)
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Enrolled At')
-                    ->dateTime(timezone: session('userTimezone', 'UTC'))
+                    ->dateTime(timezone: UserTimezone::fromSession())
                     ->sortable(),
             ])
             ->filters([

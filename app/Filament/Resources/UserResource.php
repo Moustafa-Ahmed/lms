@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Support\UserTimezone;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -44,17 +45,17 @@ class UserResource extends Resource
 
                         Forms\Components\TextInput::make('password')
                             ->password()
-                            ->required(fn(string $operation): bool => $operation === 'create')
+                            ->required(fn (string $operation): bool => $operation === 'create')
                             ->minLength(8)
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
-                            ->dehydrated(fn(?string $state): bool => filled($state))
+                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                            ->dehydrated(fn (?string $state): bool => filled($state))
                             ->confirmed()
                             ->columnSpanFull(),
 
                         Forms\Components\TextInput::make('password_confirmation')
                             ->password()
-                            ->required(fn(string $operation): bool => $operation === 'create')
+                            ->required(fn (string $operation): bool => $operation === 'create')
                             ->maxLength(255)
                             ->dehydrated(false)
                             ->columnSpanFull(),
@@ -92,7 +93,7 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Registered')
-                    ->dateTime(timezone: session('userTimezone', 'UTC'))
+                    ->dateTime(timezone: UserTimezone::fromSession())
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

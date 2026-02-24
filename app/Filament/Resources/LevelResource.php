@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LevelResource\Pages;
 use App\Models\Level;
+use App\Support\UserTimezone;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -43,7 +44,7 @@ class LevelResource extends Resource
                     ->counts('courses')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(timezone: session('userTimezone', 'UTC'))
+                    ->dateTime(timezone: UserTimezone::fromSession())
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

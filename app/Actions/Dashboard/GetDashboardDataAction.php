@@ -3,6 +3,7 @@
 namespace App\Actions\Dashboard;
 
 use App\Models\Course;
+use App\Models\LessonProgress;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -27,13 +28,14 @@ class GetDashboardDataAction
             ->latest()
             ->paginate(9, ['*'], 'enrolled');
 
-        $completedLessonsPerCourse = $user->lessonProgress()
-            ->with('lesson')
+        $completedLessonsPerCourse = LessonProgress::query()
+            ->selectRaw('lessons.course_id as course_id, COUNT(*) as completed_count')
+            ->join('lessons', 'lessons.id', '=', 'lesson_progress.lesson_id')
+            ->where('lesson_progress.user_id', $user->id)
             ->completed()
-            ->get()
-            ->filter(fn ($lp) => $lp->lesson !== null)
-            ->groupBy(fn ($lp) => $lp->lesson->course_id)
-            ->map->count();
+            ->groupBy('lessons.course_id')
+            ->pluck('completed_count', 'course_id')
+            ->map(fn ($count): int => (int) $count);
 
         $completedCourseIds = $user->courseCompletions()->pluck('course_id');
 

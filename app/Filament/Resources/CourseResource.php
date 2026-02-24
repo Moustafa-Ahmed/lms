@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
+use App\Support\UserTimezone;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -33,13 +34,13 @@ class CourseResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug((string) $state))),
+                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug((string) $state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
                             ->rules([
-                                fn(?\Illuminate\Database\Eloquent\Model $record): \Illuminate\Validation\Rules\Unique => \Illuminate\Validation\Rule::unique('courses', 'slug')
+                                fn (?\Illuminate\Database\Eloquent\Model $record): \Illuminate\Validation\Rules\Unique => \Illuminate\Validation\Rule::unique('courses', 'slug')
                                     ->ignore($record?->id),
                             ]),
 
@@ -100,7 +101,7 @@ class CourseResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(timezone: session('userTimezone', 'UTC'))
+                    ->dateTime(timezone: UserTimezone::fromSession())
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

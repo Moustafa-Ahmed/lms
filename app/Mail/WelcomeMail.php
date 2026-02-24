@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class WelcomeMail extends Mailable implements ShouldQueue
@@ -16,6 +17,18 @@ class WelcomeMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public function __construct(public User $user) {}
+
+    /**
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping("welcome-mail:{$this->user->getKey()}"))
+                ->shared()
+                ->expireAfter(300),
+        ];
+    }
 
     public function envelope(): Envelope
     {
