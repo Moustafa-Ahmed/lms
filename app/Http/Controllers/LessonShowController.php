@@ -22,6 +22,8 @@ class LessonShowController extends Controller
             return redirect()->route('login');
         }
 
+        $this->authorize('view', $lesson);
+
         try {
             $result = $action($course, $lesson, Auth::user());
         } catch (EnrollmentRequiredException $e) {

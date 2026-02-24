@@ -54,3 +54,13 @@ it('returns 404 for lesson-course mismatch', function () {
 
     $response->assertNotFound();
 });
+
+test('authenticated but not enrolled user cannot view non-preview lesson', function () {
+    $user = User::factory()->create();
+    $course = Course::factory()->published()->create();
+    $lesson = Lesson::factory()->for($course)->create(['is_free_preview' => false]);
+
+    $this->actingAs($user)
+        ->get(route('lessons.show', [$course->slug, $lesson->id]))
+        ->assertForbidden();
+});

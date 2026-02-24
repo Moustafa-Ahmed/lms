@@ -33,12 +33,15 @@ class CourseResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug((string) $state))),
+                            ->afterStateUpdated(fn(Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug((string) $state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique(Course::class, 'slug', ignoreRecord: true),
+                            ->rules([
+                                fn(?\Illuminate\Database\Eloquent\Model $record): \Illuminate\Validation\Rules\Unique => \Illuminate\Validation\Rule::unique('courses', 'slug')
+                                    ->ignore($record?->id),
+                            ]),
 
                         Forms\Components\Select::make('level_id')
                             ->label('Level')
@@ -97,7 +100,7 @@ class CourseResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime(timezone: session('userTimezone', 'UTC'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
@@ -43,17 +44,17 @@ class UserResource extends Resource
 
                         Forms\Components\TextInput::make('password')
                             ->password()
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->minLength(8)
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                            ->dehydrated(fn (?string $state): bool => filled($state))
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                            ->dehydrated(fn(?string $state): bool => filled($state))
                             ->confirmed()
                             ->columnSpanFull(),
 
                         Forms\Components\TextInput::make('password_confirmation')
                             ->password()
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->maxLength(255)
                             ->dehydrated(false)
                             ->columnSpanFull(),
@@ -91,7 +92,7 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Registered')
-                    ->dateTime()
+                    ->dateTime(timezone: session('userTimezone', 'UTC'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -101,11 +102,20 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 //
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
     }
 
     public static function getRelations(): array
@@ -119,9 +129,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
             'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

@@ -27,6 +27,7 @@ class LessonProgress extends Model
         return [
             'started_at' => 'datetime',
             'completed_at' => 'datetime',
+            'watch_seconds' => 'integer',
         ];
     }
 

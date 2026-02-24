@@ -13,7 +13,7 @@ class GetPublishedCoursesAction
     public function __invoke(?int $perPage = null, ?int $skip = null): Collection
     {
         $query = Course::query()
-            ->with('level')
+            ->with(['level', 'media'])
             ->where('is_published', true)
             ->latest();
 

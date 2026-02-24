@@ -30,7 +30,7 @@ class EnrollmentsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->modifyQueryUsing(
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->with('user')
                     ->addSelect([
                         'enrollments.*',
@@ -67,17 +67,17 @@ class EnrollmentsRelationManager extends RelationManager
                             return '0%';
                         }
 
-                        return round(($record->completed_lessons_count / $totalLessons) * 100).'%';
+                        return round(($record->completed_lessons_count / $totalLessons) * 100) . '%';
                     }),
 
                 Tables\Columns\IconColumn::make('course_completed')
                     ->label('Completed')
-                    ->getStateUsing(fn ($record): bool => (bool) $record->has_completion)
+                    ->getStateUsing(fn($record): bool => (bool) $record->has_completion)
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Enrolled At')
-                    ->dateTime()
+                    ->dateTime(timezone: session('userTimezone', 'UTC'))
                     ->sortable(),
             ])
             ->filters([

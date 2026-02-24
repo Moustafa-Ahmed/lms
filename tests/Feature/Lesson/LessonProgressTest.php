@@ -251,3 +251,16 @@ it('does not write progress for other users', function () {
         'lesson_id' => $lesson->id,
     ]);
 });
+
+test('user cannot complete a lesson on behalf of another user', function () {
+    $userA = User::factory()->create();
+    $userB = User::factory()->create();
+    $course = Course::factory()->published()->create();
+    $lesson = Lesson::factory()->for($course)->create(['is_free_preview' => false]);
+    Enrollment::factory()->create(['user_id' => $userA->id, 'course_id' => $course->id]);
+
+    // User B (not enrolled) tries to hit the complete endpoint
+    $this->actingAs($userB)
+        ->post(route('lessons.complete', [$course->slug, $lesson->id]))
+        ->assertForbidden();
+});

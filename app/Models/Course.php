@@ -40,6 +40,11 @@ class Course extends Model implements HasMedia
         return $this->getFirstMediaUrl('course_image');
     }
 
+    protected static function booted(): void
+    {
+        static::observe(\App\Observers\CourseObserver::class);
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {

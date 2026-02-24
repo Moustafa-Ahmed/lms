@@ -1,3 +1,5 @@
+import Plyr from "plyr";
+
 document.addEventListener("alpine:init", () => {
     Alpine.data(
         "lessonPlayer",
@@ -25,7 +27,6 @@ document.addEventListener("alpine:init", () => {
                         "airplay",
                         "fullscreen",
                     ],
-                    iconUrl: "https://cdn.plyr.io/3.7.8/plyr.svg",
                 });
 
                 if (this.isEnrolled && this.progressUrl) {

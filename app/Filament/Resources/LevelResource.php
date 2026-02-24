@@ -43,7 +43,7 @@ class LevelResource extends Resource
                     ->counts('courses')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime(timezone: session('userTimezone', 'UTC'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

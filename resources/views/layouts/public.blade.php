@@ -26,6 +26,7 @@
     </main>
 
     @include('partials.public.footer')
+    <livewire:timezone-sync />
 
     @livewireScripts
     @stack('scripts')
