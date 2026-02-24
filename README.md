@@ -46,6 +46,10 @@ php artisan migrate --seed
 npm run build
 ```
 
+## ER Diagram Image
+
+![ER Diagram](docs/ER%20Diagram.png)
+
 ### Development
 
 ```bash
