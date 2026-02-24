@@ -68,7 +68,7 @@ class LessonSeeder extends Seeder
             $course->recalculateStats();
         }
 
-        $this->command->info('Created lessons for ' . $courses->count() . ' courses.');
+        $this->command->info('Created lessons for '.$courses->count().' courses.');
     }
 
     private function generateLessonsForCourse(Course $course, int $count): array

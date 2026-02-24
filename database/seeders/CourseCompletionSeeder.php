@@ -56,7 +56,7 @@ class CourseCompletionSeeder extends Seeder
                 ]
             );
 
-            $this->command->info('Created course completion for: ' . $course->title);
+            $this->command->info('Created course completion for: '.$course->title);
         } else {
             $this->command->info('No fully completed courses found. Skipping CourseCompletionSeeder.');
         }

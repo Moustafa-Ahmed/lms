@@ -126,6 +126,6 @@ class CourseSeeder extends Seeder
             }
         }
 
-        $this->command->info('Created ' . count($courses) . ' courses.');
+        $this->command->info('Created '.count($courses).' courses.');
     }
 }
