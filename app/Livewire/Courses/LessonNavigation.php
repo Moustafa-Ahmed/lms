@@ -16,13 +16,13 @@ class LessonNavigation extends Component
     public Course $course;
 
     #[Locked]
-    public ?Lesson $currentLesson;
+    public ?Lesson $currentLesson = null;
 
     #[Locked]
-    public ?Lesson $previousLesson;
+    public ?Lesson $previousLesson = null;
 
     #[Locked]
-    public ?Lesson $nextLesson;
+    public ?Lesson $nextLesson = null;
 
     #[Locked]
     public bool $isEnrolled = false;
