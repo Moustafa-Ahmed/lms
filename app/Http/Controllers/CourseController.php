@@ -7,15 +7,18 @@ use App\Actions\Course\GetCourseAction;
 use App\Models\Course;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
-        $totalCourses = Course::query()
-            ->where('is_published', true)
-            ->count();
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        $totalCourses = Course::published()->count();
 
         return view('home.index', compact('totalCourses'));
     }

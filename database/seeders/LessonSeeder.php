@@ -42,11 +42,7 @@ class LessonSeeder extends Seeder
     private function generateLessonsForCourse(Course $course, int $count): array
     {
         $lessons = [];
-        $videoIds = [
-            'dQw4w9WgXcQ', 'jNQXAC9IVRw', 'ScMzIvxBSi4', 'kJQP7kiw5Fk',
-            '9bZkp7q19f0', 'RgKAFK5djSk', 'OPf0YbXqDm0', 'CevxZvSJLk8',
-            'JGwWNGJdvx8', 'hT_nvWreIhg', 'fJ9rUzIMcZQ', 'kJQP7kiw5Fk',
-        ];
+        $videoPath = asset('storage/videos/demo.mp4');
 
         $titles = [
             'Welcome & Course Overview',
@@ -66,7 +62,7 @@ class LessonSeeder extends Seeder
                 'course_id' => $course->id,
                 'title' => $titles[$i - 1] ?? "Lesson {$i}",
                 'order' => $i,
-                'video_url' => 'https://www.youtube.com/watch?v='.$videoIds[$i % count($videoIds)],
+                'video_url' => $videoPath,
                 'duration_seconds' => rand(300, 1800),
                 'is_free_preview' => $i === 1,
             ];

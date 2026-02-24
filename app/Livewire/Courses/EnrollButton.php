@@ -4,7 +4,6 @@ namespace App\Livewire\Courses;
 
 use App\Actions\Course\EnrollInCourseAction;
 use App\Models\Course;
-use App\Models\Enrollment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -20,10 +19,7 @@ class EnrollButton extends Component
         $this->isEnrolled = $isEnrolled;
 
         if (! $this->isEnrolled && Auth::check()) {
-            $this->isEnrolled = Enrollment::query()
-                ->where('user_id', Auth::id())
-                ->where('course_id', $course->id)
-                ->exists();
+            $this->isEnrolled = Auth::user()->isEnrolledIn($course);
         }
     }
 

@@ -16,7 +16,7 @@ class LessonFactory extends Factory
             'course_id' => Course::factory(),
             'title' => fake()->sentence(5),
             'order' => 1,
-            'video_url' => 'https://www.youtube.com/watch?v='.fake()->regexify('[A-Za-z0-9_-]{11}'),
+            'video_url' => asset('storage/videos/demo.mp4'),
             'duration_seconds' => fake()->numberBetween(60, 3600),
             'is_free_preview' => false,
         ];

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 class LessonProgress extends Model
 {
@@ -27,6 +28,15 @@ class LessonProgress extends Model
             'started_at' => 'datetime',
             'completed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @param  Builder<LessonProgress>  $query
+     * @param  Collection<int, int>|array<int>  $lessonIds
+     */
+    public function scopeForLessons(Builder $query, Collection|array $lessonIds): void
+    {
+        $query->whereIn('lesson_id', $lessonIds);
     }
 
     /**

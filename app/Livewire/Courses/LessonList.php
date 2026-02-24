@@ -3,7 +3,6 @@
 namespace App\Livewire\Courses;
 
 use App\Models\Course;
-use App\Models\Enrollment;
 use App\Models\LessonProgress;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -33,22 +32,18 @@ class LessonList extends Component
 
     protected function loadUserProgress(): void
     {
-        $userId = Auth::id();
         $lessonIds = $this->course->lessons->pluck('id');
 
-        $this->isEnrolled = Enrollment::query()
-            ->where('user_id', $userId)
-            ->where('course_id', $this->course->id)
-            ->exists();
+        $this->isEnrolled = Auth::user()->isEnrolledIn($this->course);
 
         if (! $this->isEnrolled) {
             return;
         }
 
         $this->completedLessons = LessonProgress::query()
-            ->where('user_id', $userId)
-            ->whereIn('lesson_id', $lessonIds)
-            ->whereNotNull('completed_at')
+            ->forUser(Auth::user())
+            ->forLessons($this->course->lessons->pluck('id'))
+            ->completed()
             ->pluck('lesson_id')
             ->map(fn ($id) => (string) $id)
             ->toArray();

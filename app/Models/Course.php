@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class Course extends Model
 {
@@ -75,6 +77,30 @@ class Course extends Model
         $minutes = floor(($seconds % 3600) / 60);
 
         return sprintf('%dh %02dm', $hours, $minutes);
+    }
+
+    /** @param Builder<Course> $query */
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('is_published', true);
+    }
+
+    /**
+     * @param  Builder<Course>  $query
+     * @param  Collection<int, int>|array<int>  $courseIds
+     */
+    public function scopeEnrolledIn(Builder $query, Collection|array $courseIds): void
+    {
+        $query->whereIn('id', $courseIds);
+    }
+
+    /**
+     * @param  Builder<Course>  $query
+     * @param  Collection<int, int>|array<int>  $courseIds
+     */
+    public function scopeNotEnrolledIn(Builder $query, Collection|array $courseIds): void
+    {
+        $query->whereNotIn('id', $courseIds);
     }
 
     public function recalculateStats(): void

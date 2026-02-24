@@ -21,9 +21,7 @@ class CourseCatalog extends Component
     {
         $courses = $action($this->perPage);
 
-        $this->totalCount ??= Course::query()
-            ->where('is_published', true)
-            ->count();
+        $this->totalCount ??= Course::published()->count();
 
         return view('livewire.courses.course-catalog', [
             'courses' => $courses,

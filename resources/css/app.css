@@ -1,12 +1,14 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
 
 /* Shared public page styles */
-@import './pages/shared.css';
+@import "./pages/shared.css";
 
 /* Page-specific styles */
-@import './pages/home.css';
-@import './pages/courses.css';
+@import "./pages/home.css";
+@import "./pages/courses.css";
+@import "./pages/lessons.css";
+@import "./pages/dashboard.css";
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -16,7 +18,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -44,7 +49,6 @@
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -59,7 +63,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
