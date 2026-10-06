@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\CourseCompletionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CourseCompletion extends Model
 {
-    /** @use HasFactory<\Database\Factories\CourseCompletionFactory> */
+    /** @use HasFactory<CourseCompletionFactory> */
     use HasFactory;
 
     protected $fillable = [

@@ -50,7 +50,7 @@ test('registration sets welcome_email_sent_at on the user', function () {
         'password_confirmation' => 'password',
     ]);
 
-    $user = \App\Models\User::where('email', 'jane2@example.com')->first();
+    $user = User::where('email', 'jane2@example.com')->first();
     expect($user->welcome_email_sent_at)->not->toBeNull();
 });
 
@@ -61,10 +61,10 @@ test('welcome email timestamp is not written when dispatch fails and can be retr
 
     $action = app(QueueWelcomeEmailAction::class);
 
-    Mail::shouldReceive('to->queue')->once()->andThrow(new \RuntimeException('Queue transport unavailable'));
+    Mail::shouldReceive('to->queue')->once()->andThrow(new RuntimeException('Queue transport unavailable'));
     Mail::shouldReceive('to->queue')->once()->andReturnNull();
 
-    expect(fn () => $action($user))->toThrow(\RuntimeException::class);
+    expect(fn () => $action($user))->toThrow(RuntimeException::class);
 
     $user->refresh();
     expect($user->welcome_email_sent_at)->toBeNull();
@@ -77,7 +77,7 @@ test('welcome email timestamp is not written when dispatch fails and can be retr
 });
 
 test('registration still succeeds when welcome email dispatch fails', function () {
-    Mail::shouldReceive('to->queue')->once()->andThrow(new \RuntimeException('Queue transport unavailable'));
+    Mail::shouldReceive('to->queue')->once()->andThrow(new RuntimeException('Queue transport unavailable'));
 
     $response = $this->post(route('register.store'), [
         'name' => 'Retry Safe',

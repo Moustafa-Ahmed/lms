@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\CourseObserver;
+use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Course extends Model implements HasMedia
 {
-    /** @use HasFactory<\Database\Factories\CourseFactory> */
+    /** @use HasFactory<CourseFactory> */
     use HasFactory, InteractsWithMedia, SoftDeletes;
 
     protected $fillable = [
@@ -42,7 +44,7 @@ class Course extends Model implements HasMedia
 
     protected static function booted(): void
     {
-        static::observe(\App\Observers\CourseObserver::class);
+        static::observe(CourseObserver::class);
     }
 
     /** @return array<string, string> */

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Course;
 use App\Models\Enrollment;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -13,7 +14,7 @@ class LmsStatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $totalCourses = \App\Models\Course::query()->count();
+        $totalCourses = Course::query()->count();
         $totalEnrollments = Enrollment::query()->count();
 
         $averageCompletion = $this->calculateAverageCompletion();
