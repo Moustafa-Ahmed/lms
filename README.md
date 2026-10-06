@@ -74,7 +74,7 @@ It is deliberately built the way a real product would be: business rules live in
 | Admin panel | Filament 3 |
 | Auth | Laravel Fortify (incl. 2FA) |
 | Media | Spatie Laravel Media Library |
-| Database | MySQL 8 (SQLite supported) |
+| Database | SQLite (default) · MySQL 8 (via Laravel Sail) |
 | Asset bundling | Vite 7 |
 | Tests | Pest 4 |
 | Code style | Laravel Pint |
@@ -107,7 +107,8 @@ The full domain model is documented as an ER diagram ([`docs/ER Diagram.png`](do
 4. **Policy-based authorization + isolation tests.** Feature tests assert that a learner can never view or complete another user's lessons or progress.
 5. **Media with mime-type restrictions.** Course images and lesson video/thumbnails are managed as Spatie Media Library collections.
 6. **Timezone-aware timestamps.** A small `UserTimezone` support class normalizes the browser zone (synced via Livewire) and the admin panel renders dates in the viewer's timezone.
-7. **Tested and linted in CI.** 100+ Pest tests and Laravel Pint run on PHP 8.3 and 8.4 for every pull request.
+7. **Tested and linted in CI.** 106 Pest tests and Laravel Pint run on PHP 8.3 and 8.4 for every pull request.
+8. **Kept current.** `composer audit` and `npm audit` both report **zero known advisories**, and the lockfile is resolved against the minimum supported PHP (8.3) so it installs cleanly across the whole CI matrix.
 
 ---
 
@@ -117,9 +118,10 @@ The full domain model is documented as an ER diagram ([`docs/ER Diagram.png`](do
 - PHP **8.3+** with the usual extensions
 - [Composer](https://getcomposer.org) 2
 - Node.js **20+** and npm
-- MySQL 8 — *or* SQLite for a zero-config local run
+- **Optional:** [Docker](https://www.docker.com) to run the stack with Laravel Sail
+- **Optional:** MySQL 8 — the app defaults to SQLite, so no database server is required
 
-### Setup
+### Quick start (SQLite — no services)
 
 ```bash
 git clone https://github.com/Moustafa-Ahmed/lms.git
@@ -128,26 +130,29 @@ composer setup   # installs PHP/JS deps, creates .env, generates a key, builds a
 php artisan db:seed
 ```
 
-`composer setup` expects a working database connection in `.env`. The default is MySQL; create the database first or edit the `DB_*` values.
-
-<details>
-<summary><strong>Zero-config alternative (SQLite)</strong></summary>
-
-```bash
-cp .env.example .env
-sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/; s|^DB_DATABASE=.*|DB_DATABASE=database/database.sqlite|' .env
-touch database/database.sqlite
-composer setup
-php artisan db:seed
-```
-
-</details>
-
-Run the app (server + queue worker + Vite):
+The committed `.env.example` defaults to SQLite, so this runs with nothing else installed. Start the app (server + queue worker + Vite):
 
 ```bash
 composer run dev
 ```
+
+<details>
+<summary><strong>Docker with Laravel Sail (MySQL 8)</strong></summary>
+
+A [`compose.yaml`](compose.yaml) ships with the project. Uncomment the MySQL block in `.env`, then run the stack in containers:
+
+```bash
+composer install
+cp .env.example .env          # then uncomment the MySQL block
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail npm install && ./vendor/bin/sail npm run build
+```
+
+Sail serves the app on <http://localhost> and forwards Vite on port 5173 (`./vendor/bin/sail npm run dev`).
+
+</details>
 
 ### Demo credentials
 
@@ -156,7 +161,7 @@ composer run dev
 | Admin | `admin@example.com` | `password` | `/admin` |
 | Learner | `learner@example.com` | `password` | `/login` |
 
-The seeder creates **10 courses** (9 published + 1 draft), **5–10 lessons** per course with the first lesson free to preview, and enrolls the demo learner in 4 courses with progress and one completed course — so the dashboard, progress badges and completion email all have something to show immediately.
+The seeder creates **10 courses** (9 published + 1 draft), **5–10 lessons** per course with the first lesson free to preview, and enrolls the demo learner in 4 courses with progress and one completed course — so the dashboard, progress badges and completion email all have something to show immediately. The bundled demo video is attached to the first (free-preview) lesson of each course; set `SEED_DEMO_VIDEO=false` in `.env` to skip it and keep seeding fast.
 
 ---
 
@@ -200,7 +205,7 @@ tests/              # Pest feature + unit tests
 - [ ] Certificates and course ratings/reviews
 - [ ] Move demo media to object storage (see note below)
 
-> **Note on demo media.** For a fully working demo out of the box, the seeded lessons reuse a single committed sample video (`resources/demo/videos/demo.mp4`, ~49 MB). In a real deployment, lesson video would live in object storage (S3) rather than the repository.
+> **Note on demo media.** For a fully working demo out of the box, the seeder attaches a single committed sample video (`resources/demo/videos/demo.mp4`, ~49 MB) to the first lesson of each course. In a real deployment, lesson video would live in object storage (S3) rather than the repository, and `SEED_DEMO_VIDEO=false` keeps local seeding light.
 
 ---
 

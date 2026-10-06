@@ -19,6 +19,7 @@ class LessonSeeder extends Seeder
         }
 
         $demoVideo = resource_path('demo/videos/demo.mp4');
+        $seedDemoVideo = config('lms.seed_demo_video', true);
 
         $lessonImagesPath = resource_path('demo/images/lessons');
         $lessonThumbnails = [
@@ -48,7 +49,7 @@ class LessonSeeder extends Seeder
                     $data
                 );
 
-                if (file_exists($demoVideo) && ! $lesson->hasMedia('lesson_video')) {
+                if ($seedDemoVideo && $lesson->order === 1 && file_exists($demoVideo) && ! $lesson->hasMedia('lesson_video')) {
                     $lesson->addMedia($demoVideo)
                         ->preservingOriginal()
                         ->toMediaCollection('lesson_video');
