@@ -39,3 +39,6 @@ skills-lock.json
 boost.json
 .github/copilot-instructions.md
 .github/copilot/
+
+# Browser-automation scratch output.
+/.playwright-mcp/
