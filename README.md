@@ -177,6 +177,22 @@ The suite covers the action layer, policies, database constraints, idempotency, 
 
 > Error pages reference Vite, so build the front-end once (`npm run build`, or `composer setup`) before running the tests locally. CI does this automatically.
 
+<details>
+<summary>Run the suite against MySQL 8 (Sail)</summary>
+
+The default suite runs on in-memory SQLite for speed. To run the exact same suite on MySQL, use the `testing` database that Sail provisions automatically:
+
+```bash
+./vendor/bin/sail up -d
+
+./vendor/bin/sail exec -T -u sail \
+  -e DB_CONNECTION=mysql -e DB_HOST=mysql -e DB_PORT=3306 \
+  -e DB_DATABASE=testing -e DB_USERNAME=sail -e DB_PASSWORD=password \
+  laravel.test php artisan test --compact
+```
+
+</details>
+
 ---
 
 ## Project structure
