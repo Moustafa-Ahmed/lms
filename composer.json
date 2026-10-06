@@ -1,10 +1,16 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "moustafa-ahmed/career-180-lms",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
-    "keywords": ["laravel", "framework"],
+    "description": "Career 180 — a production-style Learning Management System built with Laravel 12, Livewire 3, Filament 3 and Tailwind CSS 4.",
+    "keywords": ["laravel", "livewire", "filament", "lms", "learning-management-system", "tailwindcss", "pest"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Moustafa Ahmed",
+            "homepage": "https://github.com/Moustafa-Ahmed"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "filament/filament": "3.3",
