@@ -21,3 +21,24 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Generated Filament assets (republished by `php artisan filament:upgrade`
+# via composer's post-autoload-dump hook on every install).
+/public/js/filament
+/public/css/filament
+
+# Local AI/editor tooling — kept on disk for contributors but out of the
+# public repository to avoid noise and duplication.
+.agent/
+.agents/
+.claude/
+.cursor/
+.opencode/
+opencode.json
+skills-lock.json
+boost.json
+.github/copilot-instructions.md
+.github/copilot/
+
+# Browser-automation scratch output.
+/.playwright-mcp/

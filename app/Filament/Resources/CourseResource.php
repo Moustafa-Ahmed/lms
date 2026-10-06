@@ -12,7 +12,11 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class CourseResource extends Resource
 {
@@ -34,13 +38,13 @@ class CourseResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug((string) $state))),
+                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug((string) $state))),
 
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
                             ->rules([
-                                fn (?\Illuminate\Database\Eloquent\Model $record): \Illuminate\Validation\Rules\Unique => \Illuminate\Validation\Rule::unique('courses', 'slug')
+                                fn (?Model $record): Unique => Rule::unique('courses', 'slug')
                                     ->ignore($record?->id),
                             ]),
 
