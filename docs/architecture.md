@@ -2,7 +2,7 @@
 
 ## 1) Purpose and Scope
 
-This document defines the architecture for the Career 180 mini-LMS challenge.
+This document defines the architecture of Career 180, a production-style LMS built with Laravel, Livewire and Filament.
 
 It covers the end-to-end system design for:
 
